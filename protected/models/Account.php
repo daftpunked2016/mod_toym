@@ -133,8 +133,8 @@ class Account extends CActiveRecord
 		$username = strtolower($username);
 	   	$account = self::model()
 	   		->isActive()
-	   		->find('LOWER(username) = :username AND (account_type_id = 2 OR account_type_id = 3)', array(':username'=>$username))
-	   		->with('user');
+	   		->find('LOWER(username) = :username AND (account_type_id = 2 OR account_type_id = 3)', array(':username'=>$username));
+	   		//->with('user');
 
 	   	if($account != null) {
 	   		if($account->validatePassword($password)) {
