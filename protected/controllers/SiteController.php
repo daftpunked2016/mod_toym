@@ -118,7 +118,7 @@ class SiteController extends Controller
 								Yii::app()->session->clear();
 								Yii::app()->session->destroy();
 								Yii::app()->user->setFlash('success', 'Nomination Complete! Please wait for the e-mail notification regarding your nomination. Thank you!');
-								$this->redirect(['site/cancelnominate']);
+								$this->redirect(['site/checklogin']);
 							}
 						}
 					}
