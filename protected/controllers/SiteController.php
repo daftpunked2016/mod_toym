@@ -79,11 +79,13 @@ class SiteController extends Controller
 		$nominator = new ToymNominator();
 		$nominee = new ToymNominee();
 		$nominee_info = new ToymNomineeInfo();
+		$nominee_essays = new ToymNomineeEssays();
 		
 		if (isset($_POST['ToymNominator']) && isset($_POST['ToymNominee'])) {
 			$nominator->attributes = $_POST['ToymNominator'];
 			$nominee->attributes = $_POST['ToymNominee'];
 			$nominee_info->attributes = $_POST['ToymNomineeInfo'];
+			$nominee_essays->attributes = $_POST['ToymNomineeEssays'];
 			$valid_files_loaded = false;
 			
 			if($this->validateFileInput('photograph_upload_id',$_FILES)) {
@@ -97,6 +99,7 @@ class SiteController extends Controller
 			$valid = $nominator->validate();
 			$valid = $nominee->validate() && $valid;
 			$valid = $nominee_info->validate() && $valid;
+			$valid = $nominee_essays->validate() && $valid;
 
 			if ($valid && $valid_files_loaded) {
 				$transaction = Yii::app()->db->beginTransaction();
@@ -109,14 +112,16 @@ class SiteController extends Controller
 
 						if ($nominee->save()) {	
 							$nominee_info->nominee_id = $nominee->id;
+							$nominee_essays->nominee_id = $nominee->id;
 							$nomination = new ToymNomination();
 							$nomination->nominator_id =  $nominator->id;
 							$nomination->nominee_id = $nominee->id;
 							
-							if($nomination->save() && $nominee_info->save()) {
+							if($nomination->save() && $nominee_info->save() && $nominee_essays->save()) {
 								$transaction->commit();
 								Yii::app()->session->clear();
 								Yii::app()->session->destroy();
+								Yii::app()->session->open();
 								Yii::app()->user->setFlash('success', 'Nomination Complete! Please wait for the e-mail notification regarding your nomination. Thank you!');
 								$this->redirect(['site/checklogin']);
 							}
@@ -145,6 +150,7 @@ class SiteController extends Controller
 			'nominator'=>$nominator,
 			'nominee'=>$nominee,
 			'nominee_info'=>$nominee_info,
+			'nominee_essays'=>$nominee_essays,
 			'account'=> (isset($session['account'])) ? $session['account'] : null,
 			'categories'=>ToymCategory::model()->findAll(['order'=>'catname ASC']),
 			'subcategories'=>ToymSubcategory::model()->findAll(['order'=>'catdesc ASC']),

@@ -6,9 +6,6 @@
  * The followings are the available columns in table '{{toym_nominee_info}}':
  * @property integer $id
  * @property integer $nominee_id
- * @property string $nominator_essay_1
- * @property string $nominator_essay_2
- * @property string $nominator_essay_3
  * @property integer $citizenship
  * @property integer $civil_status
  * @property string $gender
@@ -41,10 +38,6 @@
  * @property string $published_work
  * @property string $category
  * @property string $important_published_works
- * @property string $career_info_essay_1
- * @property string $career_info_essay_2
- * @property string $career_info_essay_3
- * @property string $career_info_essay_4
  * @property integer $photograph_upload_id
  * @property integer $id_birth_cert_upload_id
  */
@@ -66,18 +59,17 @@ class ToymNomineeInfo extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('nominator_essay_1, nominator_essay_2, nominator_essay_3, citizenship, civil_status, gender, birthdate, birthplace, home_address, province, city, country, home_telephone, mobile_no, spouse_name, children_name, grade_school, high_school, college, college_degree, post_graduate, post_graduate_degree, academic_honors, name_business_employer, business_address, business_phone_no, length_of_service_with_business_employer, organization_affiliation, positions_held_term_office, derogatory_information, warranty_of_originality_creation, published_work, category, important_published_works, career_info_essay_1, career_info_essay_2, career_info_essay_3, career_info_essay_4, photograph_upload_id, id_birth_cert_upload_id', 'required', 'message'=>'* This field is required.'),
+			array('citizenship, civil_status, gender, birthdate, birthplace, home_address, province, city, country, home_telephone, mobile_no, spouse_name, children_name, grade_school, high_school, college, college_degree, post_graduate, post_graduate_degree, academic_honors, name_business_employer, business_address, business_phone_no, length_of_service_with_business_employer, organization_affiliation, positions_held_term_office, derogatory_information, warranty_of_originality_creation, published_work, category, important_published_works, photograph_upload_id, id_birth_cert_upload_id', 'required', 'message'=>'* This field is required.'),
 			array('nominee_id, country, age, length_of_service_with_business_employer, photograph_upload_id, id_birth_cert_upload_id', 'numerical', 'integerOnly'=>true),
 			array('civil_status', 'length', 'max'=>1),
 			array('gender', 'length', 'max'=>1),
 			array('birthplace, home_address, business_address', 'length', 'max'=>155),
 			array('province, city, civil_status, home_telephone, mobile_no, business_phone_no', 'length', 'max'=>50),
-			array('nominator_essay_1, nominator_essay_2, nominator_essay_3, career_info_essay_1, career_info_essay_2, career_info_essay_3, career_info_essay_4', 'validateWordCount'),
 			array('spouse_name, grade_school, high_school, college, college_degree, post_graduate, post_graduate_degree, name_business_employer', 'length', 'max'=>100),
 			array('academic_honors, derogatory_information, warranty_of_originality_creation', 'length', 'max'=>255),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, nominee_id, nominator_essay_1, nominator_essay_2, nominator_essay_3, citizenship, civil_status, gender, birthdate, birthplace, home_address, province, city, country, home_telephone, mobile_no, age, spouse_name, children_name, grade_school, high_school, college, college_degree, post_graduate, post_graduate_degree, academic_honors, name_business_employer, business_address, business_phone_no, length_of_service_with_business_employer, organization_affiliation, positions_held_term_office, derogatory_information, warranty_of_originality_creation, published_work, category, important_published_works, career_info_essay_1, career_info_essay_2, career_info_essay_3, career_info_essay_4, photograph_upload_id, id_birth_cert_upload_id', 'safe', 'on'=>'search'),
+			array('id, nominee_id, citizenship, civil_status, gender, birthdate, birthplace, home_address, province, city, country, home_telephone, mobile_no, age, spouse_name, children_name, grade_school, high_school, college, college_degree, post_graduate, post_graduate_degree, academic_honors, name_business_employer, business_address, business_phone_no, length_of_service_with_business_employer, organization_affiliation, positions_held_term_office, derogatory_information, warranty_of_originality_creation, published_work, category, important_published_works, photograph_upload_id, id_birth_cert_upload_id', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -100,9 +92,6 @@ class ToymNomineeInfo extends CActiveRecord
 		return array(
 			'id' => 'ID',
 			'nominee_id' => 'Nominee',
-			'nominator_essay_1' => 'Nominator Essay 1',
-			'nominator_essay_2' => 'Nominator Essay 2',
-			'nominator_essay_3' => 'Nominator Essay 3',
 			'citizenship' => 'Citizenship',
 			'civil_status' => 'Civil Status',
 			'gender' => 'Gender',
@@ -135,10 +124,6 @@ class ToymNomineeInfo extends CActiveRecord
 			'published_work' => 'Published Work',
 			'category' => 'Category',
 			'important_published_works' => 'List of Most Important Published Works',
-			'career_info_essay_1' => 'Career Info Essay 1',
-			'career_info_essay_2' => 'Career Info Essay 2',
-			'career_info_essay_3' => 'Career Info Essay 3',
-			'career_info_essay_4' => 'Career Info Essay 4',
 			'photograph_upload_id' => 'Photograph',
 			'id_birth_cert_upload_id' => 'ID/Birth Certificate',
 		);
@@ -151,19 +136,6 @@ class ToymNomineeInfo extends CActiveRecord
 			return true;
 		} else {
 			return false;
-		}
-	}
-
-	public function validateWordCount($attribute, $params)
-	{	
-		$word_count = str_word_count($this->$attribute);
-		//print_r($word_count);exit;
-		if( $word_count < 260 ) {
-			 $this->addError($attribute, 'Answer is below minimum word count (250 words).');
-		}
-	 	
-	 	if( $word_count > 700 ) {
-			 $this->addError($attribute, 'Answer is exceeds maximum word count (700 words).');
 		}
 	}
 
@@ -187,9 +159,6 @@ class ToymNomineeInfo extends CActiveRecord
 
 		$criteria->compare('id',$this->id);
 		$criteria->compare('nominee_id',$this->nominee_id);
-		$criteria->compare('nominator_essay_1',$this->nominator_essay_1,true);
-		$criteria->compare('nominator_essay_2',$this->nominator_essay_2,true);
-		$criteria->compare('nominator_essay_3',$this->nominator_essay_3,true);
 		$criteria->compare('citizenship',$this->citizenship);
 		$criteria->compare('civil_status',$this->civil_status);
 		$criteria->compare('gender',$this->gender,true);
@@ -222,10 +191,6 @@ class ToymNomineeInfo extends CActiveRecord
 		$criteria->compare('published_work',$this->published_work,true);
 		$criteria->compare('category',$this->category,true);
 		$criteria->compare('important_published_works',$this->important_published_works,true);
-		$criteria->compare('career_info_essay_1',$this->career_info_essay_1,true);
-		$criteria->compare('career_info_essay_2',$this->career_info_essay_2,true);
-		$criteria->compare('career_info_essay_3',$this->career_info_essay_3,true);
-		$criteria->compare('career_info_essay_4',$this->career_info_essay_4,true);
 		$criteria->compare('photograph_upload_id',$this->photograph_upload_id);
 		$criteria->compare('id_birth_cert_upload_id',$this->id_birth_cert_upload_id);
 
