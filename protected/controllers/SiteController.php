@@ -115,6 +115,8 @@ class SiteController extends Controller
 							
 							if($nomination->save() && $nominee_info->save()) {
 								$transaction->commit();
+								Yii::app()->session->clear();
+								Yii::app()->session->destroy();
 								Yii::app()->user->setFlash('success', 'Nomination Complete! Please wait for the e-mail notification regarding your nomination. Thank you!');
 								$this->redirect(['site/cancelnominate']);
 							}
