@@ -121,10 +121,10 @@ class SiteController extends Controller
 						}
 					}
 				} catch (Exception $e) {
-					// echo "<pre>";
-					// print_r($e);
-					// echo "</pre>";
-					// $transaction->rollback();
+					echo "<pre>";
+					print_r($e);
+					echo "</pre>";
+					$transaction->rollback();
 					Yii::app()->user->setFlash('error', 'Nomination Failed! Please try again later or contact the System Administrator if it happened repeatedly.');
 				}
 			} else {
