@@ -28,7 +28,7 @@
     <div class="form-group">
       <?php echo $form->labelEx($nominee,'title',array('class'=>'col-sm-2 control-label')); ?>
       <div class="col-sm-10">
-        <?php echo $form->textField($nominee,'title',array('class'=>'form-control', 'placeholder'=>'Title')); ?>
+        <?php echo $form->textField($nominee,'title',array('class'=>'form-control', 'placeholder'=>'Title (e.g Dr., Mr., PhD, etc.) ')); ?>
         <?php echo $form->error($nominee,'title', array('class'=>'text-red')); ?>
       </div>
     </div>

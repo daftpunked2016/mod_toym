@@ -4,15 +4,18 @@
     <!-- sidebar menu: : style can be found in sidebar.less -->
     <ul class="sidebar-menu">
       <li class="header">MAIN NAVIGATION</li>
-      <li>
-        <a href="<?= Yii::app()->createUrl('site/nominate'); ?>">
+      <?php if(!isset(Yii::app()->session['member'])): ?>
+      <li active>
+        <a href="<?= Yii::app()->createUrl('site/checklogin'); ?>">
           <i class="fa fa-check-square-o"></i> <span>Nominate</span>
         </a>
       </li>
+      <?php endif; ?>
       <?php if(isset(Yii::app()->session['member'])): ?>
       <li>
         <a href="<?= Yii::app()->createUrl('site/cancelnominate'); ?>">
-          <i class="fa fa-arrow-left text-red"></i> <span class="text-red">Back</span>
+          <i class="fa fa-arrow-left text-red"></i> 
+          <span class="text-red">Back <?php if(isset(Yii::app()->session['account'])): ?>(Log-out)<?php endif; ?></span>
         </a>
       </li>
       <?php endif; ?>
