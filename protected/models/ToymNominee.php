@@ -172,8 +172,8 @@ class ToymNominee extends CActiveRecord
 			if($this->isNewRecord) {
 				$this->salt = $this->generateSalt();
 				$this->status = 0; 
-				$this->password = $this->hashPassword($this->password,$this->salt);
 				$this->temp_password = $this->password;
+				$this->password = $this->hashPassword($this->password,$this->salt);
 			} else {
 				$this->date_updated = date('Y-m-d H:i');
 			}
