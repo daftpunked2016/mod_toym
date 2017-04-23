@@ -1,9 +1,17 @@
 <div class="box box-success">
   <div class="box-header with-border">
-    <h3 class="box-title"><strong style="margin-right:5px;">IV.</strong> <em class="text-muted">More Info</em></h3>
+    <h3 class="box-title">
+      <strong style="margin-right:5px;">IV.</strong> <em class="text-muted">More Info</em> 
+    </h3>
   </div>
   <!-- /.box-header -->
   <div class="box-body">
+    <div class="row">
+      <div class="col-md-12" style="margin-left:10px;">
+        <span class="text-muted"><strong><i class="fa fa-warning"></i> NOTE: </strong> All fields are required. Please indicate  <strong>N/A</strong> if not applicable.</span>
+      </div>
+    </div>
+    <br />
     <div class="row form-group">
       <div class="col-md-6">
         <?php echo $form->labelEx($nominee_info,'citizenship',array('class'=>'control-label')); ?>
@@ -217,13 +225,6 @@
         <?php echo $form->labelEx($nominee_info,'published_work',array('class'=>'control-label')); ?>
         <?php echo $form->textArea($nominee_info,'published_work',array('class'=>'form-control ckeditor-basic','id'=>'published-work', 'placeholder'=>'')); ?>
         <?php echo $form->error($nominee_info,'published_work', array('class'=>'text-red')); ?>
-      </div>
-    </div>
-    <div class="form-group">
-      <div class="col-md-12">
-        <?php echo $form->labelEx($nominee_info,'category',array('class'=>'control-label')); ?>
-        <?php echo $form->textArea($nominee_info,'category',array('class'=>'form-control ckeditor-basic','id'=>'organization-affiliation', 'placeholder'=>'')); ?>
-        <?php echo $form->error($nominee_info,'category', array('class'=>'text-red')); ?>
       </div>
     </div>
     <div class="form-group">

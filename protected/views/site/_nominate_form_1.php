@@ -4,6 +4,12 @@
   </div>
   <!-- /.box-header -->
   <div class="box-body">
+    <div class="row">
+      <div class="col-md-12" style="margin-left:10px;">
+        <span class="text-muted"><strong><i class="fa fa-warning"></i> NOTE: </strong> All fields are required. Please indicate  <strong>N/A</strong> if not applicable.</span>
+      </div>
+    </div>
+    <br />
     <?php if($account == NULL): ?>
       <div class="form-group">
         <?php echo $form->labelEx($nominator,'lastname',array('class'=>'col-sm-2 control-label')); ?>

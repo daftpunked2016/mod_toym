@@ -5,8 +5,14 @@
   <!-- /.box-header -->
   <div class="box-body">
     <div class="row">
-      <div class="col-md-12">
-        <span class="text-muted"><strong>* NOTE: </strong> Each category requires a minimum of 250 words but not exceeding 700 words</span>
+      <div class="col-md-12" style="margin-left:10px;">
+        <span class="text-muted">
+          <strong><i class="fa fa-warning"></i> NOTE: </strong> 
+          <ul>
+            <li>All fields are required. Please indicate  <strong>N/A</strong> if not applicable.</li>
+            <li>Each category requires a minimum of 250 words but not exceeding 700 words </li>
+          </ul>
+        </span>
       </div>
     </div>
     <br />

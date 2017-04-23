@@ -4,6 +4,12 @@
   </div>
   <!-- /.box-header -->
   <div class="box-body">
+    <div class="row">
+      <div class="col-md-12" style="margin-left:10px;">
+        <span class="text-muted"><strong><i class="fa fa-warning"></i> NOTE: </strong> All fields are required.</span>
+      </div>
+    </div>
+    <br />
     <div class="form-group has-feedback">
       <?php echo $form->labelEx($nominee_info,'photograph_upload_id',array('class'=>'col-sm-2 control-label')); ?>
       <input type="file" name="photograph_upload_id" class="file">
