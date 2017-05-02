@@ -40,12 +40,12 @@ class ToymNominee extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('email, password, firstname, lastname, middlename, title, name_on_trophy, phonetic_pronunciation, profession, position, toym_category_id, toym_subcategory_id', 'required', 'message'=>'* This field is required.'),
+			array('email, firstname, lastname, middlename, title, name_on_trophy, phonetic_pronunciation, profession, position, toym_category_id, toym_subcategory_id', 'required', 'message'=>'* This field is required.'),
 			array('nominator_id, toym_category_id, toym_subcategory_id, status, salt', 'numerical', 'integerOnly'=>true),
 			array('email','unique'),
 			array('email','validateEmail'),
 			array('email, firstname, middlename, lastname', 'length', 'max'=>40),
-			array('password, temp_password', 'length', 'min'=>8, 'max'=>16),
+			//array('password, temp_password', 'length', 'min'=>8, 'max'=>16),
 			array('title', 'length', 'max'=>10),
 			array('name_on_trophy, phonetic_pronunciation', 'length', 'max'=>100),
 			array('profession, position', 'length', 'max'=>155),
@@ -172,8 +172,8 @@ class ToymNominee extends CActiveRecord
 			if($this->isNewRecord) {
 				$this->salt = $this->generateSalt();
 				$this->status = 0; 
-				$this->temp_password = $this->password;
-				$this->password = $this->hashPassword($this->password,$this->salt);
+				//$this->temp_password = $this->password;
+				//$this->password = $this->hashPassword($this->password,$this->salt);
 			} else {
 				$this->date_updated = date('Y-m-d H:i');
 			}

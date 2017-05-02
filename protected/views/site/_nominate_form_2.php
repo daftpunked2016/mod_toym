@@ -60,14 +60,14 @@
         <span class="glyphicon glyphicon-envelope form-control-feedback" style="margin-right:20px;"></span>
       </div>
     </div>
-    <div class="form-group">
-      <?php echo $form->labelEx($nominee,'password',array('class'=>'col-sm-2 control-label')); ?>
+    <!-- <div class="form-group">
+      <?php // echo $form->labelEx($nominee,'password',array('class'=>'col-sm-2 control-label')); ?>
       <div class="col-sm-10">
-        <?php echo $form->passwordField($nominee,'password',array('class'=>'form-control', 'placeholder'=>'Password')); ?>
-        <?php echo $form->error($nominee,'password', array('class'=>'text-red')); ?>
+        <?php // echo $form->passwordField($nominee,'password',array('class'=>'form-control', 'placeholder'=>'Password')); ?>
+        <?php // echo $form->error($nominee,'password', array('class'=>'text-red')); ?>
         <span class="glyphicon glyphicon-lock form-control-feedback" style="margin-right:20px;"></span>
       </div>
-    </div>
+    </div> -->
     <div class="form-group">
       <?php echo $form->labelEx($nominee,'profession',array('class'=>'col-sm-2 control-label')); ?>
       <div class="col-sm-10">
