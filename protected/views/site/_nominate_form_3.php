@@ -18,7 +18,7 @@
     <br />
     <div class="form-group">
       <div class="col-md-12">
-        <label>Explain how the nominee exemplifies the principle expressed in the following line of the JCI Creed, “That service to humanity is the best work of life.” *</label>
+        <label>Explain how the nominee exemplifies the principle expressed in the following line of the JCI VALUES, “That service to humanity is the best work of life.” *</label>
         <?php echo $form->textArea($nominee_essays,'nominator_essay_1',array('class'=>'form-control nominator-essays','id'=>'nominator-essay-1', 'placeholder'=>'')); ?>
         <?php echo $form->error($nominee_essays,'nominator_essay_1', array('class'=>'text-red')); ?>
       </div>

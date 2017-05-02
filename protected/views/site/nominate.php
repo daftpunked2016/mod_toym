@@ -47,9 +47,9 @@
     <?= $this->renderPartial('_nominate_form_1', ['form'=>$form, 'nominator'=>$nominator, 'chapters'=>$chapters, 'account'=>$account]); ?>
     <?= $this->renderPartial('_nominate_form_2', ['form'=>$form, 'nominee'=>$nominee, 'categories'=>$categories, 'subcategories'=>$subcategories]); ?>
     <?= $this->renderPartial('_nominate_form_3', ['form'=>$form, 'nominee_essays'=>$nominee_essays]); ?>
-    <?= $this->renderPartial('_nominate_form_4', ['form'=>$form, 'nominee_info'=>$nominee_info, 'countries'=>$countries]); ?>
-    <?= $this->renderPartial('_nominate_form_5', ['form'=>$form, 'nominee_essays'=>$nominee_essays]); ?>
-    <?= $this->renderPartial('_nominate_form_6', ['form'=>$form, 'nominee_info'=>$nominee_info]); ?>
+    <? //= $this->renderPartial('_nominate_form_4', ['form'=>$form, 'nominee_info'=>$nominee_info, 'countries'=>$countries]); ?>
+    <? //= $this->renderPartial('_nominate_form_5', ['form'=>$form, 'nominee_essays'=>$nominee_essays]); ?>
+    <? //= $this->renderPartial('_nominate_form_6', ['form'=>$form, 'nominee_info'=>$nominee_info]); ?>
 
     <div class="row">
       <div class="col-md-12">
@@ -74,10 +74,10 @@
     replaceTextareaToCkeditor('nominator-essay-1', 700);
     replaceTextareaToCkeditor('nominator-essay-2', 700);
     replaceTextareaToCkeditor('nominator-essay-3', 700);
-    replaceTextareaToCkeditor('career-info-essay-1', 700);
-    replaceTextareaToCkeditor('career-info-essay-2', 700);
-    replaceTextareaToCkeditor('career-info-essay-3', 700);
-    replaceTextareaToCkeditor('career-info-essay-4', 700);
+    //replaceTextareaToCkeditor('career-info-essay-1', 700);
+    //replaceTextareaToCkeditor('career-info-essay-2', 700);
+    //replaceTextareaToCkeditor('career-info-essay-3', 700);
+    //replaceTextareaToCkeditor('career-info-essay-4', 700);
     CKEDITOR.replaceClass = 'ckeditor-basic';
 
     var toym_category = $('#toym-category-id').val();

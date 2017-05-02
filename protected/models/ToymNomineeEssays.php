@@ -32,9 +32,9 @@ class ToymNomineeEssays extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('nominator_essay_1, nominator_essay_2, nominator_essay_3, career_info_essay_1, career_info_essay_2, career_info_essay_3, career_info_essay_4', 'required', 'message'=>'* This field is required.'),
+			array('nominator_essay_1, nominator_essay_2, nominator_essay_3', 'required', 'message'=>'* This field is required.'),
 			array('nominee_id', 'numerical', 'integerOnly'=>true),
-			array('nominator_essay_1, nominator_essay_2, nominator_essay_3, career_info_essay_1, career_info_essay_2, career_info_essay_3, career_info_essay_4', 'validateWordCount'),
+			array('nominator_essay_1, nominator_essay_2, nominator_essay_3', 'validateWordCount'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('id, nominee_id, nominator_essay_1, nominator_essay_2, nominator_essay_3, career_info_essay_1, career_info_essay_2, career_info_essay_3, career_info_essay_4', 'safe', 'on'=>'search'),

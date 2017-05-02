@@ -78,46 +78,48 @@ class SiteController extends Controller
 
 		$nominator = new ToymNominator();
 		$nominee = new ToymNominee();
-		$nominee_info = new ToymNomineeInfo();
+		//$nominee_info = new ToymNomineeInfo();
 		$nominee_essays = new ToymNomineeEssays();
 		
 		if (isset($_POST['ToymNominator']) && isset($_POST['ToymNominee'])) {
 			$nominator->attributes = $_POST['ToymNominator'];
 			$nominee->attributes = $_POST['ToymNominee'];
-			$nominee_info->attributes = $_POST['ToymNomineeInfo'];
+			//$nominee_info->attributes = $_POST['ToymNomineeInfo'];
 			$nominee_essays->attributes = $_POST['ToymNomineeEssays'];
-			$valid_files_loaded = false;
+			// $valid_files_loaded = false;
 			
-			if($this->validateFileInput('photograph_upload_id',$_FILES)) {
-				$valid_files_loaded = true; $nominee_info->photograph_upload_id = 1;
-			}
+			// if($this->validateFileInput('photograph_upload_id',$_FILES)) {
+			// 	$valid_files_loaded = true; $nominee_info->photograph_upload_id = 1;
+			// }
 
-			if($this->validateFileInput('id_birth_cert_upload_id',$_FILES)) {
-				$valid_files_loaded = true; $nominee_info->id_birth_cert_upload_id = 1;
-			}
+			// if($this->validateFileInput('id_birth_cert_upload_id',$_FILES)) {
+			// 	$valid_files_loaded = true; $nominee_info->id_birth_cert_upload_id = 1;
+			// }
 
 			$valid = $nominator->validate();
 			$valid = $nominee->validate() && $valid;
-			$valid = $nominee_info->validate() && $valid;
+			//$valid = $nominee_info->validate() && $valid;
 			$valid = $nominee_essays->validate() && $valid;
 
-			if ($valid && $valid_files_loaded) {
+			//if ($valid && $valid_files_loaded) {
+			if ($valid) {
 				$transaction = Yii::app()->db->beginTransaction();
 
 				try {
 					if ($nominator->save()) {
 						$nominee->nominator_id = $nominator->id;
-						$nominee_info->addFileToAttr($_FILES['id_birth_cert_upload_id'], 'id_birth_cert_upload_id', $nominator->id);
-						$nominee_info->addFileToAttr($_FILES['photograph_upload_id'], 'photograph_upload_id', $nominator->id);
+						//$nominee_info->addFileToAttr($_FILES['id_birth_cert_upload_id'], 'id_birth_cert_upload_id', $nominator->id);
+						//$nominee_info->addFileToAttr($_FILES['photograph_upload_id'], 'photograph_upload_id', $nominator->id);
 
 						if ($nominee->save()) {	
-							$nominee_info->nominee_id = $nominee->id;
+							//$nominee_info->nominee_id = $nominee->id;
 							$nominee_essays->nominee_id = $nominee->id;
 							$nomination = new ToymNomination();
 							$nomination->nominator_id =  $nominator->id;
 							$nomination->nominee_id = $nominee->id;
 							
-							if($nomination->save() && $nominee_info->save() && $nominee_essays->save()) {
+							//if($nomination->save() && $nominee_info->save() && $nominee_essays->save()) {
+							if($nomination->save() && $nominee_essays->save()) {
 								$transaction->commit();
 								Yii::app()->session->clear();
 								Yii::app()->session->destroy();
@@ -149,7 +151,7 @@ class SiteController extends Controller
 		$this->render('nominate', [
 			'nominator'=>$nominator,
 			'nominee'=>$nominee,
-			'nominee_info'=>$nominee_info,
+			//'nominee_info'=>$nominee_info,
 			'nominee_essays'=>$nominee_essays,
 			'account'=> (isset($session['account'])) ? $session['account'] : null,
 			'categories'=>ToymCategory::model()->findAll(['order'=>'catname ASC']),
