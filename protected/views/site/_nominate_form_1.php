@@ -82,8 +82,9 @@
           <?php
             echo $form->dropDownList($nominator, 'endorsing_chapter',
               CHtml::listData($chapters, 'id', 'chapter'), array('empty' => 'Select Endorsing Chapter..', 'class'=>'form-control'));
-          ?>
+          ?> 
           <?php echo $form->error($nominator,'endorsing_chapter', array('class'=>'text-red')); ?>
+          <small class="text-muted">If you do not have an <em>endorsing chapter</em>, please call:  <br /> Nancy  <strong><u>+6319-931-5182</u></strong> <br /> <em>(TOYM Secretariat)</em> </small><br />
         </div>
       </div>
       <?php echo $form->hiddenField($nominator,'is_jci_member',array('value'=>0)); ?>
