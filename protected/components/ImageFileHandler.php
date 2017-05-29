@@ -3,6 +3,7 @@ class ImageFileHandler
 {
 	//UPLOAD TYPES
 	const NOMINATION_FILES = 'N';
+	const PORTFOLIO_FILES = 'P';
 
 	private static $allowed_ext = array('jpeg', 'jpg', 'png', 'gif', 'bmp', 'pdf');
 
@@ -156,6 +157,9 @@ class ImageFileHandler
 		{
 			case self::NOMINATION_FILES: //
 				$path.="nomination/";
+				break;
+			case self::PORTFOLIO_FILES: //
+				$path.="portfolio/";
 				break;
 			default:
 				$path.="nomination/";

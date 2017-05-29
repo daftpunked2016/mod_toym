@@ -37,8 +37,6 @@
  * @property string $warranty_of_originality_creation
  * @property string $published_work
  * @property string $important_published_works
- * @property integer $photograph_upload_id
- * @property integer $id_birth_cert_upload_id
  */
 class ToymNomineeInfo extends CActiveRecord
 {
@@ -58,8 +56,8 @@ class ToymNomineeInfo extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('citizenship, civil_status, gender, birthdate, birthplace, home_address, province, city, country, home_telephone, mobile_no, spouse_name, children_name, grade_school, high_school, college, college_degree, post_graduate, post_graduate_degree, academic_honors, name_business_employer, business_address, business_phone_no, length_of_service_with_business_employer, organization_affiliation, positions_held_term_office, derogatory_information, warranty_of_originality_creation, published_work, important_published_works, photograph_upload_id, id_birth_cert_upload_id', 'required', 'message'=>'* This field is required.'),
-			array('nominee_id, country, age, length_of_service_with_business_employer, photograph_upload_id, id_birth_cert_upload_id', 'numerical', 'integerOnly'=>true),
+			array('citizenship, civil_status, gender, birthdate, birthplace, home_address, province, city, country, home_telephone, mobile_no, spouse_name, children_name, grade_school, high_school, college, college_degree, post_graduate, post_graduate_degree, academic_honors, name_business_employer, business_address, business_phone_no, length_of_service_with_business_employer, organization_affiliation, positions_held_term_office, derogatory_information, warranty_of_originality_creation, published_work, important_published_works', 'required', 'message'=>'* This field is required.'),
+			array('nominee_id, country, age, length_of_service_with_business_employer', 'numerical', 'integerOnly'=>true),
 			array('civil_status', 'length', 'max'=>1),
 			array('gender', 'length', 'max'=>1),
 			array('birthplace, home_address, business_address', 'length', 'max'=>155),
@@ -68,7 +66,7 @@ class ToymNomineeInfo extends CActiveRecord
 			array('academic_honors, derogatory_information, warranty_of_originality_creation', 'length', 'max'=>255),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, nominee_id, citizenship, civil_status, gender, birthdate, birthplace, home_address, province, city, country, home_telephone, mobile_no, age, spouse_name, children_name, grade_school, high_school, college, college_degree, post_graduate, post_graduate_degree, academic_honors, name_business_employer, business_address, business_phone_no, length_of_service_with_business_employer, organization_affiliation, positions_held_term_office, derogatory_information, warranty_of_originality_creation, published_work, category, important_published_works, photograph_upload_id, id_birth_cert_upload_id', 'safe', 'on'=>'search'),
+			array('id, nominee_id, citizenship, civil_status, gender, birthdate, birthplace, home_address, province, city, country, home_telephone, mobile_no, age, spouse_name, children_name, grade_school, high_school, college, college_degree, post_graduate, post_graduate_degree, academic_honors, name_business_employer, business_address, business_phone_no, length_of_service_with_business_employer, organization_affiliation, positions_held_term_office, derogatory_information, warranty_of_originality_creation, published_work, category, important_published_works', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -122,8 +120,6 @@ class ToymNomineeInfo extends CActiveRecord
 			'warranty_of_originality_creation' => 'Warranty of Originality of Intellectual Creation',
 			'published_work' => 'Published Work',
 			'important_published_works' => 'List of Most Important Published Works',
-			'photograph_upload_id' => 'Photograph',
-			'id_birth_cert_upload_id' => 'ID/Birth Certificate',
 		);
 	}
 

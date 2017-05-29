@@ -65,6 +65,16 @@ class Account extends CActiveRecord
 			'isActive' => array(
 				'condition' => 't.status_id = 1',
 			),
+
+			'isNatChair' => array(
+				'join' => 'INNER JOIN jci_user AS u ON t.id = u.account_id',
+				'condition' => 'u.position_id = 10',
+			),
+
+			'isAreaChair' => array(
+				'join' => 'INNER JOIN jci_area_chair AS ac ON t.id = ac.account_id',
+				'condition' => 'ac.status = 1',
+			),
 		);
 	}
 
@@ -169,4 +179,17 @@ class Account extends CActiveRecord
 		//md5 not that secure anymore
 		return sha1($password.$salt);
 	}
+
+	
+    public function getRole()
+    {
+    	$model=AccountType::model()->find(array(
+    		'condition' => 'id=:id',
+    		'params' => array(
+    			':id' => $this->account_type_id,
+    			)
+    		));
+    	if($model!==NULL)
+    		return $model->account_type;
+    }
 }

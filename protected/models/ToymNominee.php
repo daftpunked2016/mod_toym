@@ -24,6 +24,10 @@
  */
 class ToymNominee extends CActiveRecord
 {
+	public $new_password;
+	public $confirm_password;
+	public $current_password;
+
 	/**
 	 * @return string the associated database table name
 	 */
@@ -45,7 +49,10 @@ class ToymNominee extends CActiveRecord
 			array('email','unique'),
 			array('email','validateEmail'),
 			array('email, firstname, middlename, lastname', 'length', 'max'=>40),
-			//array('password, temp_password', 'length', 'min'=>8, 'max'=>16),
+			array('current_password, confirm_password, new_password', 'required', 'message'=>'* This field is required.', 'on' => 'changePassword'),
+			array('current_password', 'findPasswords', 'on' => 'changePassword'),
+			array('confirm_password', 'compare', 'compareAttribute'=>'new_password', 'message'=>'New password doesn\'t match!', 'on'=>'changePassword'),
+			array('new_password', 'length', 'min'=>8, 'max'=>16),
 			array('title', 'length', 'max'=>10),
 			array('name_on_trophy, phonetic_pronunciation', 'length', 'max'=>100),
 			array('profession, position', 'length', 'max'=>155),
@@ -56,14 +63,23 @@ class ToymNominee extends CActiveRecord
 		);
 	}
 
-	/**
-	 * @return array relational rules.
-	 */
+	public function scopes()
+	{
+		return array(
+			'isActive' => array(
+				'condition' => 't.status = 1',
+			),
+		);
+	}
+
 	public function relations()
 	{
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+			'nominator' => array(self::BELONGS_TO, 'ToymNominator', 'nominator_id'),
+			'category' => array(self::BELONGS_TO, 'ToymCategory', 'toym_category_id'),
+			'subcategory' => array(self::BELONGS_TO, 'ToymSubcategory', 'toym_subcategory_id'),
 		);
 	}
 
@@ -165,13 +181,20 @@ class ToymNominee extends CActiveRecord
 		}
 	}
 
+	//comparing current password
+	public function findPasswords($attribute, $params)
+    {
+        if (!$this->validatePassword($this->current_password))
+            $this->addError($attribute, 'Old password is incorrect.');
+    }
+
 
 	protected function beforeSave()
 	{
 		if(parent::beforeSave()) {
 			if($this->isNewRecord) {
 				$this->salt = $this->generateSalt();
-				$this->status = 0; 
+				$this->status = 3; //AC Pending
 				//$this->temp_password = $this->password;
 				//$this->password = $this->hashPassword($this->password,$this->salt);
 			} else {
@@ -203,6 +226,11 @@ class ToymNominee extends CActiveRecord
 		return sha1($password.$salt);
 	}
 
+	public function validatePassword($password)
+	{
+		return $this->hashPassword($password,$this->salt) === $this->password;
+	}
+
 	/**
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
@@ -213,4 +241,39 @@ class ToymNominee extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+
+	public function getFullName()
+	{
+		return $this->firstname.' '.$this->lastname;
+	}
+
+	public function approveNomination()
+	{
+		$prefix = mt_rand(1000,9999);
+    	$temp_password =  uniqid($prefix); // CREATE RANDOM PASSWORD
+
+		$this->status = 1;
+		$this->temp_password = $temp_password;
+		$this->password = $this->hashPassword($temp_password, $this->salt);
+
+		$connection = Yii::app()->db;
+		$transaction = $connection->beginTransaction();
+
+		$email_notification = new EmailWrapper;
+		$email_notification->setSubject('TOYM - JCIPH | Nominee Account Log-in Credentials');
+		$email_notification->setReceivers(array(
+			$this->email => $this->getFullName(),
+		));
+		$email_notification->setMessage(Yii::app()->controller->renderPartial('application.views.email_templates.nominee_approval_notif', ['nominee'=>$this], true));
+		$send_email = $email_notification->sendMessage();
+
+		if($this->save() && $send_email) {	
+			$transaction->commit();
+			return true;
+		} else {
+			$transaction->rollback();
+			return false;
+		}
+	}
+
 }

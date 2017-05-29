@@ -11,6 +11,7 @@ return array(
 
 	// preloading 'log' component
 	'preload'=>array('log'),
+	'timeZone' => 'Asia/Singapore', 
 
 	// autoloading model and component classes
 	'import'=>array(
@@ -20,7 +21,11 @@ return array(
 
 	'modules'=>array(
 		// uncomment the following to enable the Gii tool
-		
+		'nominee',
+		'nominator',
+		'admin',
+		'pres',
+		'ac',
 		'gii'=>array(
 			'class'=>'system.gii.GiiModule',
 			'password'=>'SECURE',

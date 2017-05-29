@@ -65,6 +65,8 @@ class User extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'account' => array(self::BELONGS_TO, 'Account', 'account_id'),
+			'position' => array(self::BELONGS_TO, 'Position', 'position_id'),
+			'chapter' => array(self::BELONGS_TO, 'Chapter', 'chapter_id'),
 		);
 	}
 
@@ -142,5 +144,10 @@ class User extends CActiveRecord
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
+	}
+
+	public function getFullName()
+	{
+		return $this->firstname.' '.$this->lastname;
 	}
 }

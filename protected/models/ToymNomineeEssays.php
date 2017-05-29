@@ -37,7 +37,7 @@ class ToymNomineeEssays extends CActiveRecord
 			array('nominator_essay_1, nominator_essay_2, nominator_essay_3', 'validateWordCount'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, nominee_id, nominator_essay_1, nominator_essay_2, nominator_essay_3, career_info_essay_1, career_info_essay_2, career_info_essay_3, career_info_essay_4', 'safe', 'on'=>'search'),
+			array('id, nominee_id, nominator_essay_1, nominator_essay_2, nominator_essay_3', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -63,10 +63,6 @@ class ToymNomineeEssays extends CActiveRecord
 			'nominator_essay_1' => 'Nominator Essay 1',
 			'nominator_essay_2' => 'Nominator Essay 2',
 			'nominator_essay_3' => 'Nominator Essay 3',
-			'career_info_essay_1' => 'Career Info Essay 1',
-			'career_info_essay_2' => 'Career Info Essay 2',
-			'career_info_essay_3' => 'Career Info Essay 3',
-			'career_info_essay_4' => 'Career Info Essay 4',
 		);
 	}
 

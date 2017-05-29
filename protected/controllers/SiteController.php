@@ -82,6 +82,7 @@ class SiteController extends Controller
 		$nominee_essays = new ToymNomineeEssays();
 		
 		if (isset($_POST['ToymNominator']) && isset($_POST['ToymNominee'])) {
+			$nominator->setScenario('createNominator');
 			$nominator->attributes = $_POST['ToymNominator'];
 			$nominee->attributes = $_POST['ToymNominee'];
 			//$nominee_info->attributes = $_POST['ToymNomineeInfo'];
@@ -117,9 +118,17 @@ class SiteController extends Controller
 							$nomination = new ToymNomination();
 							$nomination->nominator_id =  $nominator->id;
 							$nomination->nominee_id = $nominee->id;
+
+							$email_notification = new EmailWrapper;
+							$email_notification->setSubject('TOYM - JCIPH | Nomination');
+							$email_notification->setReceivers(array(
+								$nominee->email => $nominee->getFullName(),
+							));
+							$email_notification->setMessage($this->renderPartial('application.views.email_templates.nominee_nomination_notif', ['nominee'=>$nominee], true));
+							$send_email = $email_notification->sendMessage();
 							
 							//if($nomination->save() && $nominee_info->save() && $nominee_essays->save()) {
-							if($nomination->save() && $nominee_essays->save()) {
+							if($nomination->save() && $nominee_essays->save() && $send_email) {
 								$transaction->commit();
 								Yii::app()->session->clear();
 								Yii::app()->session->destroy();

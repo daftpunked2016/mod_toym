@@ -23,6 +23,10 @@
  */
 class ToymNominator extends CActiveRecord
 {
+	public $new_password;
+	public $confirm_password;
+	public $current_password;
+
 	/**
 	 * @return string the associated database table name
 	 */
@@ -44,13 +48,26 @@ class ToymNominator extends CActiveRecord
 			array('email','unique'),
 			array('email','validateEmail'),
 			array('email, firstname, lastname, middlename', 'length', 'max'=>40),
-			array('password', 'length', 'min'=>8, 'max'=>16),
+			array('current_password, confirm_password, new_password', 'required', 'message'=>'* This field is required.', 'on' => 'changePassword'),
+			array('current_password', 'findPasswords', 'on' => 'changePassword'),
+			array('confirm_password', 'compare', 'compareAttribute'=>'new_password', 'message'=>'New password doesn\'t match!', 'on'=>'changePassword'),
+			array('new_password', 'length', 'min'=>8, 'max'=>16),
+			array('password', 'length', 'min'=>8, 'max'=>16, 'on' => 'createNominator'),
 			array('home_address, business_address', 'length', 'max'=>155),
 			array('home_telephone, mobile_no', 'length', 'max'=>15),
 			array('date_updated', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('id, email, password, account_id, is_jci_member, firstname, lastname, middlename, home_address, home_telephone, mobile_no, business_address, endorsing_chapter, date_created, date_updated, status_id', 'safe', 'on'=>'search'),
+		);
+	}
+
+	public function scopes()
+	{
+		return array(
+			'isActive' => array(
+				'condition' => 't.status_id = 1',
+			),
 		);
 	}
 
@@ -62,8 +79,19 @@ class ToymNominator extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+			'chapter' => array(self::BELONGS_TO, 'Chapter', 'endorsing_chapter'),
 		);
 	}
+
+	public function onArea($area_no)
+    {
+        $this->getDbCriteria()->mergeWith(array(
+        	'condition'=> "chapter.area_no = {$area_no}",
+            'join' => "INNER JOIN jci_chapter AS chapter ON nominator.endorsing_chapter = chapter.id",
+        ));
+
+        return $this;
+    }
 
 	/**
 	 * @return array customized attribute labels (name=>label)
@@ -125,6 +153,13 @@ class ToymNominator extends CActiveRecord
 		//md5 not that secure anymore
 		return sha1($password.$salt);
 	}
+
+	//comparing current password
+	public function findPasswords($attribute, $params)
+    {
+        if (!$this->validatePassword($this->current_password))
+            $this->addError($attribute, 'Old password is incorrect.');
+    }
 
 	/**
 	 * Retrieves a list of models based on the current search/filter conditions.
@@ -197,6 +232,11 @@ class ToymNominator extends CActiveRecord
 		}
 	}
 
+	public function validatePassword($password)
+	{
+		return $this->hashPassword($password,$this->salt) === $this->password;
+	}
+
 	/**
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
@@ -206,5 +246,10 @@ class ToymNominator extends CActiveRecord
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
+	}
+
+	public function getFullName()
+	{
+		return $this->firstname.' '.$this->lastname;
 	}
 }
