@@ -78,6 +78,8 @@ class ToymPortfolio extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+			'nominator' => array(self::BELONGS_TO, 'ToymNominator', 'nominator_id'),
+			'nominee' => array(self::BELONGS_TO, 'ToymNominee', 'nominee_id'),
 		);
 	}
 
@@ -182,6 +184,28 @@ class ToymPortfolio extends CActiveRecord
 	 	// if( $word_count > 700 ) {
 		// 	 $this->addError($attribute, 'Answer is exceeds maximum word count (700 words).');
 		// }
+	}
+
+	public function getUpdator()
+	{
+		$updated_by = json_decode($this->updated_by);
+
+		switch(key($updated_by)) {
+			case "AC":
+				$updator = AreaChair::getAccount($updated_by->AC);
+				$position = "AC";
+				break;
+			case "NR":
+				$updator = ToymNominator::model()->findByPk($updated_by->NR);
+				$position = "Nominator";
+				break;
+			case "NE":
+				$updator = ToymNominee::model()->findByPk($updated_by->NE);
+				$position = "Nominee";
+				break;
+		}
+
+		return $updator->getFullName()." <small class='text-muted'>{$position}</small>";
 	}
 
 

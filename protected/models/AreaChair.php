@@ -139,4 +139,10 @@ class AreaChair extends CActiveRecord
 
 		return $response;
 	}
+
+	public static function getAccount($area_chair_id)
+	{
+		$ac = AreaChair::model()->findByPk($area_chair_id);
+		return $ac->account;
+	}
 }

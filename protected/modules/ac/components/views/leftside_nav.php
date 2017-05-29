@@ -12,13 +12,13 @@
             </span>
           </a>
           <ul class="treeview-menu menu-open" style="display: block;">
-            <li class=""><a href="index.html"><i class="fa fa-circle-o"></i> Pending</a></li>
-            <li><a href="index2.html"><i class="fa fa-check-circle-o"></i> Approved</a></li>
-            <li><a href="index2.html"><i class="fa fa-times-circle-o"></i> Rejected</a></li>
+            <li class=""><a href="<?= Yii::app()->createUrl('ac/nominations/nominees?status=3'); ?>"><i class="fa fa-circle-o"></i> Pending</a></li>
+            <li><a href="<?= Yii::app()->createUrl('ac/nominations/nominees?status=1'); ?>"><i class="fa fa-check-circle-o"></i> Approved</a></li>
+            <li><a href="<?= Yii::app()->createUrl('ac/nominations/nominees?status=4'); ?>"><i class="fa fa-times-circle-o"></i> Rejected</a></li>
           </ul>
         </li>
       	<li>
-        	<a href="<?= Yii::app()->createUrl('site/checklogin'); ?>">
+        	<a href="<?= Yii::app()->createUrl('ac/portfolios/index'); ?>">
           		<i class="fa fa-file-text-o"></i> <span>Portfolios</span>
         	</a>
       	</li>
