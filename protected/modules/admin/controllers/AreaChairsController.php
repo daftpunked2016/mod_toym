@@ -2,7 +2,7 @@
 
 class AreachairsController extends Controller
 {
-	public $layout = '/layouts/main';
+	public $layout = '/layouts/main'; 
 
 	public function actionIndex()
 	{
