@@ -1,6 +1,6 @@
 <?php
 
-class AreaChairsController extends Controller
+class AreachairsController extends Controller
 {
 	public $layout = '/layouts/main';
 
