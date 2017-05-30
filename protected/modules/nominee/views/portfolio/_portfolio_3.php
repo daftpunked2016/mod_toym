@@ -13,7 +13,7 @@
     <div class="form-group has-feedback">
       <?php echo $form->labelEx($portfolio,'photograph_upload_id',array('class'=>'col-sm-3 control-label')); ?>
       <input type="file" name="photograph_upload_id" class="file">
-      <div class="input-group col-sm-9" style="padding:0 20px;">
+      <div class="input-group col-sm-9" style="padding:0 20px;" data-allowed="{'jpg','jpeg','png'}">
         <span class="input-group-btn">
           <button class="browse btn btn-default" type="button"><i class="glyphicon glyphicon-plus"></i> Select File </button>
         </span>
@@ -30,7 +30,7 @@
     </div>
     <div class="form-group has-feedback">
       <?php echo $form->labelEx($portfolio,'id_birth_cert_upload_id',array('class'=>'col-sm-3 control-label')); ?>
-      <input type="file" name="id_birth_cert_upload_id" class="file">
+      <input type="file" name="id_birth_cert_upload_id" class="file" data-allowed="{'jpg','jpeg','png', 'pdf'}">
       <div class="input-group col-sm-9" style="padding:0 20px;">
         <span class="input-group-btn" >
           <button class="browse btn btn-default" type="button"><i class="glyphicon glyphicon-plus"></i> Select File </button>
@@ -49,7 +49,7 @@
     </div>
     <div class="form-group has-feedback">
       <?php echo $form->labelEx($portfolio,'nbi_clearance_upload_id',array('class'=>'col-sm-3 control-label')); ?>
-      <input type="file" name="nbi_clearance_upload_id" class="file">
+      <input type="file" name="nbi_clearance_upload_id" class="file" data-allowed="{'jpg','jpeg','png', 'pdf'}">
       <div class="input-group col-sm-9" style="padding:0 20px;">
         <span class="input-group-btn" >
           <button class="browse btn btn-default" type="button"><i class="glyphicon glyphicon-plus"></i> Select File </button>
@@ -60,8 +60,7 @@
         <?php echo $form->error($portfolio,'nbi_clearance_upload_id', array('class'=>'text-red')); ?>
         <br />
         <small class="text-muted">
-          A certified copy of the ID/Birth Certificate should be uploaded along with the nomination form to prove the age of the nominee. <br />
-          We accept any official document indicating the birth date of the nominee. JCI requests this document to check that the nominee is in JCI age. <br />
+          A certified copy of the NBI Clearance should be uploaded.<br />
           This file must be in JPG or PDF Format and cannot be greater than 3MB of size
         </small>
       </div>
