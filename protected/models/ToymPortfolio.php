@@ -50,7 +50,7 @@ class ToymPortfolio extends CActiveRecord
 			array('supporting_photo_1, supporting_photo_2, supporting_photo_3, supporting_photo_4', 'required', 'on'=>'page2', 'message'=>'* At least 1 image file is required '),
 			array('photograph_upload_id, id_birth_cert_upload_id, nbi_clearance_upload_id', 'required', 'on'=>'page3', 'message'=>'* This field is required '),
 			array('nominee_id, nominator_id, nomination_id, photograph_upload_id, id_birth_cert_upload_id, nbi_clearance_upload_id, status_id', 'numerical', 'integerOnly'=>true),
-			array('created_by, updated_by', 'length', 'max'=>10),
+			array('created_by, updated_by', 'length', 'max'=>20),
 			array('career_info_essay_1, career_info_essay_2, career_info_essay_3, career_info_essay_4, date_created, date_updated, date_submitted', 'safe'),
 			array('career_info_essay_1, career_info_essay_2, career_info_essay_3, career_info_essay_4', 'validateWordCount', 'on'=>['page1', 'submit']),
 			// The following rule is used by search().
