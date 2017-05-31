@@ -11,14 +11,13 @@
 <p>
 For Nominator:<br />
 Web Address: <a href="http://toym.jci.org.ph/nominator">toym.jci.org.ph/nominator/</a><br />
-Username: <i><b><?= $nominee->nominator->email; ?></b></i><br />
-Password: <i>< use the password you indicated ></i>
-</p>
 <?php if($nominee->nominator->is_jci_member == 1): ?>
-<p>
-	For username and password, use your myjcip login credentials
-</p>
+<b>For username and password, use your myjcip login credentials</b>
+<?php else: ?>
+	Username: <i><b><?= $nominee->nominator->email; ?></b></i><br />
+	Password: <i>< use the password you indicated ></i>
 <?php endif; ?>
+</p>
 <br />
 <p>
 For Nominee:
