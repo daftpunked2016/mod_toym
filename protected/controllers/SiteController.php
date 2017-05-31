@@ -119,16 +119,16 @@ class SiteController extends Controller
 							$nomination->nominator_id =  $nominator->id;
 							$nomination->nominee_id = $nominee->id;
 
-							$email_notification = new EmailWrapper;
-							$email_notification->setSubject('TOYM - JCIPH | Nomination');
-							$email_notification->setReceivers(array(
-								$nominee->email => $nominee->getFullName(),
-							));
-							$email_notification->setMessage($this->renderPartial('application.views.email_templates.nominee_nomination_notif', ['nominee'=>$nominee], true));
-							$send_email = $email_notification->sendMessage();
+							// $email_notification = new EmailWrapper;
+							// $email_notification->setSubject('TOYM - JCIPH | Nomination');
+							// $email_notification->setReceivers(array(
+							// 	$nominee->email => $nominee->getFullName(),
+							// ));
+							// $email_notification->setMessage($this->renderPartial('application.views.email_templates.nominee_nomination_notif', ['nominee'=>$nominee], true));
+							// $send_email = $email_notification->sendMessage();
 							
 							//if($nomination->save() && $nominee_info->save() && $nominee_essays->save()) {
-							if($nomination->save() && $nominee_essays->save() && $send_email) {
+							if($nomination->save() && $nominee_essays->save()) {
 								$transaction->commit();
 								Yii::app()->session->clear();
 								Yii::app()->session->destroy();

@@ -28,6 +28,6 @@
 		</small>
 	</td>
 	<td>
-		<?= CHtml::link('<span class="btn-flat btn-info btn-xs"><i class="fa fa-search"></i></span> ', array('nominations/view', 'id' => $data->id), array('title' => 'View Nomination Details')); ?> 
+		<?= CHtml::link('<span class="btn-flat btn-info btn-xs"><i class="fa fa-search"></i></span> ', array(), array('title' => 'View Nomination Details', 'disabled'=>'disabled')); ?> 
 	</td>
 </tr>

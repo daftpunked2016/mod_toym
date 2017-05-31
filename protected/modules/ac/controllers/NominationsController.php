@@ -65,7 +65,7 @@ class NominationsController extends Controller
 
 			if($nominee->save()) {	
 				$transaction->commit();
-				Yii::app()->user->setFlash('success','Nominee account successfully Approved');
+				Yii::app()->user->setFlash('success','Nomination successfully Approved');
 			} else {
 				$transaction->rollback();
 				Yii::app()->user->setFlash('error','An error occurred while running function. Please try again or report this issue to the administrator.');
@@ -89,7 +89,7 @@ class NominationsController extends Controller
 
 			if($nominee->save()) {	
 				$transaction->commit();
-				Yii::app()->user->setFlash('success','Nominee account successfully reverted to Pending status.');
+				Yii::app()->user->setFlash('success','Nomination successfully reverted to Pending status.');
 			} else {
 				$transaction->rollback();
 				Yii::app()->user->setFlash('error','An error occurred while running function. Please try again or report this issue to the administrator.');
@@ -110,9 +110,17 @@ class NominationsController extends Controller
 
 			$nominee->status = 4; //REJECTED
 
-			if($nominee->save()) {	
+			$email_notification = new EmailWrapper;
+			$email_notification->setSubject('TOYM - JCIPH | REJECTION OF NOMINATION');
+			$email_notification->setReceivers(array(
+				$nominee->nominator->email => $nominee->nominator->getFullName(),
+			));
+			$email_notification->setMessage($this->renderPartial('application.views.email_templates.nominee_reject_notif', ['nominee'=>$nominee], true));
+			$send_email = $email_notification->sendMessage();
+
+			if($nominee->save() && $send_email) {	
 				$transaction->commit();
-				Yii::app()->user->setFlash('success','Nominee account successfully Rejected');
+				Yii::app()->user->setFlash('success','Nomination successfully Rejected');
 			} else {
 				$transaction->rollback();
 				Yii::app()->user->setFlash('error','An error occurred while running function. Please try again or report this issue to the administrator.');

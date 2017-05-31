@@ -15,9 +15,27 @@
 		}
 	?>
 
-<h1>Nominations</h1>
-</section>
 
+<?php 
+switch($status) {
+	case 1:
+		$status_str = "APPROVED";
+		break;
+	case 2:
+		$status_str = "Pending";
+		break;
+	case 3:
+		$status_str = "Pending to AC";
+		break;
+	case 4:
+		$status_str = "Rejected";
+		break;
+	default:
+		$status_str = "*ALL";
+}
+?>
+<h1>Nominations <em class="text-muted">(<?= $status_str; ?>)</em></h1>
+</section>
 <section class="content">
 	<div class="well" style="padding: 10px;">
 		<div class="row">
@@ -35,7 +53,7 @@
 							<option value="">*ALL</option>
 							<option value="1" <?= (isset($_GET['status']) && $_GET['status'] == 1) ? 'selected' : null; ?> >Approved</option>
 							<option value="2"  <?= (isset($_GET['status']) && $_GET['status'] == 2) ? 'selected' : null; ?>>Pending</option>
-							<option value="3"  <?= (isset($_GET['status']) && $_GET['status'] == 3) ? 'selected' : null; ?>>For AC Approval</option>
+							<option value="3"  <?= (isset($_GET['status']) && $_GET['status'] == 3) ? 'selected' : null; ?>>Pending to AC</option>
 							<option value="4"  <?= (isset($_GET['status']) && $_GET['status'] == 4) ? 'selected' : null; ?>>Rejected</option>
 						</select>
 					</div>
@@ -84,3 +102,50 @@
 		</div>
 	</div>
 </section>
+
+
+<div class="modal fade" tabindex="-1" role="dialog" id="viewDetailsModal">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel"><i class="fa fa-search"></i> View Nomination Details</h4>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+$(function() {
+	$(document).on('click', '.btn-view-details', function() {
+		$('.btn-actions').prop('disabled', true);
+		var $btn = $(this).button('loading');
+
+		$.ajax({
+	         url: site_url + '/admin/nominations/viewdetails',
+	         method: "POST",
+	         data: {'id': $(this).data('id')},
+	         success: function(response) {
+	            	details_html = response;
+	         },
+	         complete: function() {
+	         	$('.btn-actions').prop('disabled', false);
+	         	$btn.button('reset');
+	            
+	         	$('#viewDetailsModal').find('.modal-body').html(details_html);
+	         	$('#viewDetailsModal').modal('show');
+	         },
+	         error: function() {
+	              alert("ERROR in running requested function. Page will now reload.");
+	              location.reload();
+	         }
+	    });
+	});
+});
+</script>

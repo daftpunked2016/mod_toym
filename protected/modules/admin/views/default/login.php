@@ -50,11 +50,7 @@
       <?php echo CHtml::submitButton('Sign in', array('class'=>'btn btn-primary btn-block btn-flat')); ?>
     </div>
     <?php $this->endWidget(); ?>
-    
-    <br />
-    <div class="row text-center">
-      <a href="#">Forgot Password?</a><br>
-    </div>
+  
 
   </div>
   <!-- /.login-box-body -->

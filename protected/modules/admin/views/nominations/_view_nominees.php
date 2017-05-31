@@ -39,14 +39,13 @@
 		</small>
 	</td>
 	<td>
-		<?= CHtml::link('<span class="btn-flat btn-info btn-xs"><i class="fa fa-search"></i></span> ', array('nominations/view', 'id' => $data->id), array('title' => 'View Nomination Details')); ?> 
-		
+		<span class="btn-actions btn-flat btn-info btn-xs btn-view-details" data-loading-text="<i class='fa fa-spinner fa-spin'></i>" style="cursor:pointer;" data-id="<?= $data->id; ?>"><i class="fa fa-search"></i></span>
 		<?php 
 			if($data->status == 2) {
-				echo CHtml::link('<span class="btn-flat btn-success btn-xs"><i class="fa fa-check"></i></span> ', array('nominations/approve', 'id' => $data->id, 'status'=>$status), array('confirm' => "Are you sure you want to approve this nominee?", 'title' => 'Approve Nominee')).' ';
-				echo CHtml::link('<span class="btn-flat btn-danger btn-xs"><i class="fa fa-remove"></i></span> ', array('nominations/reject', 'id' => $data->id, 'status'=>$status), array('confirm' => "Are you sure you want to reject this nominee?", 'title' => 'Reject Nominee')).' ';
+				echo CHtml::link('<span class="btn-actions btn-flat btn-success btn-xs"><i class="fa fa-check"></i></span> ', array('nominations/approve', 'id' => $data->id, 'status'=>$status), array('confirm' => "Are you sure you want to approve this nominee?", 'title' => 'Approve Nominee')).' ';
+				echo CHtml::link('<span class="btn-actions btn-flat btn-danger btn-xs"><i class="fa fa-remove"></i></span> ', array('nominations/reject', 'id' => $data->id, 'status'=>$status), array('confirm' => "Are you sure you want to reject this nominee?", 'title' => 'Reject Nominee')).' ';
 			} else if($data->status == 1 || $data->status == 4) {
-				echo CHtml::link('<span class="btn-flat btn-warning btn-xs"><i class="fa fa-circle-o"></i></span> ', array('nominations/returntopending', 'id' => $data->id, 'status'=>$status), array('confirm' => "Are you sure you revert this nominee into pending status?", 'title' => 'Revert to Pending')).' ';
+				echo CHtml::link('<span class="btn-actions btn-flat btn-warning btn-xs"><i class="fa fa-circle-o"></i></span> ', array('nominations/returntopending', 'id' => $data->id, 'status'=>$status), array('confirm' => "Are you sure you revert this nominee into pending status?", 'title' => 'Revert to Pending')).' ';
 			} 
 		?>
 	</td>

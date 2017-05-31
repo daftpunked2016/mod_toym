@@ -15,7 +15,25 @@
 		}
 	?>
 
-<h1>Nominations</h1>
+<?php 
+switch($status) {
+	case 1:
+		$status_str = "APPROVED";
+		break;
+	case 2:
+		$status_str = "Pending to NC";
+		break;
+	case 3:
+		$status_str = "Pending";
+		break;
+	case 4:
+		$status_str = "Rejected";
+		break;
+	default:
+		$status_str = "*ALL";
+}
+?>
+<h1>Nominations <em class="text-muted">(<?= $status_str; ?>)</em></h1>
 </section>
 
 <section class="content">
@@ -34,7 +52,7 @@
 						<select class="form-control" name="status">
 							<option value="">*ALL</option>
 							<option value="1" <?= (isset($_GET['status']) && $_GET['status'] == 1) ? 'selected' : null; ?> >Approved</option>
-							<option value="2"  <?= (isset($_GET['status']) && $_GET['status'] == 2) ? 'selected' : null; ?>>For NC/Admin Approval</option>
+							<option value="2"  <?= (isset($_GET['status']) && $_GET['status'] == 2) ? 'selected' : null; ?>>Pending to NC/Admin</option>
 							<option value="3"  <?= (isset($_GET['status']) && $_GET['status'] == 3) ? 'selected' : null; ?>>Pending</option>
 							<option value="4"  <?= (isset($_GET['status']) && $_GET['status'] == 4) ? 'selected' : null; ?>>Rejected</option>
 						</select>

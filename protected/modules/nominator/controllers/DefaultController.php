@@ -8,7 +8,7 @@ class DefaultController extends Controller
 	{
 		$this->redirect(['nomination/info']);
 	}
-
+	
 	public function actionLogin()
 	{
 		if(Yii::app()->getModule('nominator')->user->id) {

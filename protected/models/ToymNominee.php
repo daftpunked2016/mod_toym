@@ -260,9 +260,9 @@ class ToymNominee extends CActiveRecord
 		$transaction = $connection->beginTransaction();
 
 		$email_notification = new EmailWrapper;
-		$email_notification->setSubject('TOYM - JCIPH | Nominee Account Log-in Credentials');
+		$email_notification->setSubject('TOYM - JCIPH | APPROVAL OF NOMINATION');
 		$email_notification->setReceivers(array(
-			$this->email => $this->getFullName(),
+			$this->nominator->email => $this->nominator->getFullName(),
 		));
 		$email_notification->setMessage(Yii::app()->controller->renderPartial('application.views.email_templates.nominee_approval_notif', ['nominee'=>$this], true));
 		$send_email = $email_notification->sendMessage();
