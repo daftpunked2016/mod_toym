@@ -65,7 +65,7 @@ class PortfolioController extends Controller
 			if(isset($_FILES['photograph_upload_id'])) $portfolio->addFileToAttr($_FILES['photograph_upload_id'], 'photograph_upload_id', null, $nominee_id);
 			if(isset($_FILES['nbi_clearance_upload_id'])) $portfolio->addFileToAttr($_FILES['nbi_clearance_upload_id'], 'nbi_clearance_upload_id', null, $nominee_id);
 
-			if(isset($_POST['change_page']) && $portfolio->status_id == 2) {
+			if(isset($_POST['change_page']) && $portfolio->status_id != 1) {
 				$validate = true;
 			} else {
 				$validate = $portfolio->validate();
@@ -172,6 +172,7 @@ class PortfolioController extends Controller
 		$nominee_id = Yii::app()->getModule('nominee')->user->id;
 
 		$portfolio = ToymPortfolio::model()->find("nominee_id = {$nominee_id}");
+		if($portfolio == null) $portfolio = new ToymPortfolio();
 		$portfolio->setScenario('submit');
 
 		if(isset($_FILES['id_birth_cert_upload_id'])) $portfolio->addFileToAttr($_FILES['id_birth_cert_upload_id'], 'id_birth_cert_upload_id', null, $nominee_id);

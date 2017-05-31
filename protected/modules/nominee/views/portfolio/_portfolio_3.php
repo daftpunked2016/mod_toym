@@ -113,7 +113,7 @@
   <!-- /.box-body -->
 </div>
 
-<?php if($portfolio->status_id == 2): ?>
+<?php if($portfolio->status_id != 1): ?>
 <div class="box box-info">
   <div class="box-header with-border">
     <h3 class="box-title"><strong style="margin-right:5px;">VIII.</strong> <em class="text-muted">Waiver</em></h3>
@@ -126,7 +126,7 @@
         <iframe class="embed-responsive-item" src="<?= Yii::app()->createUrl('nominee/portfolio/waiver'); ?>" height="200" width="100%" frameborder="1"> </iframe>
         <br /><br />
         <p class="text-center">
-          <input type="checkbox" name="agree" style="margin-right:10px;" id="waiver-agree" /> <strong> I AGREE TO THE WAIVER STATEMENTS *</strong>
+          <input type="checkbox" name="agree" style="margin-right:10px;" id="waiver-agree" /> <strong> I AGREE TO THE WAIVER'S STATEMENTS *</strong>
         </p>
       </div>
     </div>

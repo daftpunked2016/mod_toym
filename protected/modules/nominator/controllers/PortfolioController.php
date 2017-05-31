@@ -65,7 +65,7 @@ class PortfolioController extends Controller
 			if(isset($_FILES['photograph_upload_id'])) $portfolio->addFileToAttr($_FILES['photograph_upload_id'], 'photograph_upload_id', $nominator_id, null);
 			if(isset($_FILES['nbi_clearance_upload_id'])) $portfolio->addFileToAttr($_FILES['nbi_clearance_upload_id'], 'nbi_clearance_upload_id', $nominator_id, null);
 
-			if(isset($_POST['change_page']) && $portfolio->status_id == 2) {
+			if(isset($_POST['change_page']) && $portfolio->status_id != 1) {
 				$validate = true;
 			} else {
 				$validate = $portfolio->validate();

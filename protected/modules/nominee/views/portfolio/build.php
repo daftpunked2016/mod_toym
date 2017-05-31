@@ -81,7 +81,7 @@
         <div class="pull-left">
           <button type="button" class="btn btn-primary btn-lg" id="btn-save" data-loading-text="<i class='fa fa-spinner fa-spin'></i> Saving.."> <i class="fa fa-check-square-o"></i> Save Changes </button>
            
-          <?php if($page == 3 && $portfolio->status_id == 2): ?>  
+          <?php if($page == 3 && $portfolio->status_id != 1): ?>  
             <button type="button" id="btn-submit" class="btn btn-success btn-lg" disabled data-agree="0" data-toggle="tooltip" data-placement="top" title="You must AGREE first with the waiver statements." data-loading-text="<i class='fa fa-spinner fa-spin'></i> Processing.."> <i class="fa fa-send"></i> SUBMIT PORTFOLIO </button>
           <?php endif; ?>
         </div>
