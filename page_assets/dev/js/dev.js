@@ -16,3 +16,11 @@ function launchAlert(message, type, alert_elem_container)
 
 	alert_elem_container.html(alert_message).find('.alert').fadeIn();
 }
+
+function replaceTextareaToCkeditor(element, max_word_count) {
+  CKEDITOR.replace(element,{
+    wordcount:{
+      maxWordCount: max_word_count,
+    }
+  });
+}

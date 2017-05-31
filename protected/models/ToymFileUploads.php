@@ -102,6 +102,53 @@ class ToymFileUploads extends CActiveRecord
 		));
 	}
 
+	public static function getFilePath($id)
+	{
+		$file = self::model()->findByPk($id);
+		$file_path = Yii::app()->baseUrl."/fileuploads";
+
+		switch($file->type) {
+			case "P":
+				$file_path .= "/portfolio"; 
+				break;
+			case "N":
+				$file_path .= "/nomination";
+				break;
+		} 
+
+		if($file->nominator_id != null) {
+			$file_path .= "/NR_".$file->nominator_id;
+		} else {
+			$file_path .= "/NE_".$file->nominee_id;
+		}
+
+		$file_path .= "/".$file->filename;
+		return $file_path;
+	}
+
+	public function getServerPath()
+	{
+		$file_path = "fileuploads";
+
+		switch($this->type) {
+			case "P":
+				$file_path .= "/portfolio"; 
+				break;
+			case "N":
+				$file_path .= "/nomination";
+				break;
+		} 
+
+		if($this->nominator_id != null) {
+			$file_path .= "/NR_".$this->nominator_id;
+		} else {
+			$file_path .= "/NE_".$this->nominee_id;
+		}
+
+		$file_path .= "/".$this->filename;
+		return $file_path;
+	}
+
 	/**
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!

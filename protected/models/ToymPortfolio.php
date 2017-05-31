@@ -27,6 +27,8 @@
  */
 class ToymPortfolio extends CActiveRecord
 {
+	use BasicHelper;
+
 	/**
 	 * @return string the associated database table name
 	 */
@@ -43,11 +45,14 @@ class ToymPortfolio extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			//array('nominee_id, nominator_id, nomination_id, career_info_essay_1, status_id', 'required'),
-			array('nominee_id, nominator_id, nomination_id, supporting_photo_1, supporting_photo_2, supporting_photo_3, supporting_photo_4, photograph_upload_id, id_birth_cert_upload_id, nbi_clearance_upload_id, status_id', 'numerical', 'integerOnly'=>true),
+			array('career_info_essay_1, career_info_essay_2, career_info_essay_3, career_info_essay_4, supporting_photo_1, supporting_photo_2, supporting_photo_3, supporting_photo_4,  photograph_upload_id, id_birth_cert_upload_id, nbi_clearance_upload_id', 'required', 'on'=>'submit'),
+			array('career_info_essay_1, career_info_essay_2, career_info_essay_3, career_info_essay_4', 'required', 'on'=>'page1', 'message'=>'* This field is required '),
+			array('supporting_photo_1, supporting_photo_2, supporting_photo_3, supporting_photo_4', 'required', 'on'=>'page2', 'message'=>'* At least 1 image file is required '),
+			array('photograph_upload_id, id_birth_cert_upload_id, nbi_clearance_upload_id', 'required', 'on'=>'page3', 'message'=>'* This field is required '),
+			array('nominee_id, nominator_id, nomination_id, photograph_upload_id, id_birth_cert_upload_id, nbi_clearance_upload_id, status_id', 'numerical', 'integerOnly'=>true),
 			array('created_by, updated_by', 'length', 'max'=>10),
-			array('career_info_essay_2, career_info_essay_3, career_info_essay_4, date_created, date_updated', 'safe'),
-			array('career_info_essay_1, career_info_essay_2, career_info_essay_3, career_info_essay_4', 'validateWordCount'),
+			array('career_info_essay_1, career_info_essay_2, career_info_essay_3, career_info_essay_4, date_created, date_updated, date_submitted', 'safe'),
+			array('career_info_essay_1, career_info_essay_2, career_info_essay_3, career_info_essay_4', 'validateWordCount', 'on'=>['page1', 'submit']),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('id, nominee_id, nominator_id, nomination_id, career_info_essay_1, career_info_essay_2, career_info_essay_3, career_info_essay_4, supporting_photo_1, supporting_photo_2, supporting_photo_3, supporting_photo_4, photograph_upload_id, id_birth_cert_upload_id, nbi_clearance_upload_id, status_id, date_created, date_updated, created_by, updated_by', 'safe', 'on'=>'search'),
@@ -156,7 +161,7 @@ class ToymPortfolio extends CActiveRecord
 		));
 	}
 
-	public function addFileToAttr($file, $attribute_name, $nominator_id = null, $nominee_id = null,  $type = ImageFileHandler::NOMINATION_FILES)
+	public function addFileToAttr($file, $attribute_name, $nominator_id = null, $nominee_id = null,  $type = ImageFileHandler::PORTFOLIO_FILES)
 	{
 		$filehandler = new ImageFileHandler($file, $type, $nominator_id, $nominee_id);
 		
@@ -169,6 +174,27 @@ class ToymPortfolio extends CActiveRecord
 		// 	exit;
 		// }
 			
+
+		return $this->$attribute_name;
+	}
+
+	public function uploadEachFileToAttr($files, $attribute_name, $nominator_id = null, $nominee_id = null,  $type = ImageFileHandler::PORTFOLIO_FILES)
+	{
+		$mapped_files = $this->mapFileInputArray($files);
+		$file_ids = [];
+
+		foreach($mapped_files as $file) {
+			$filehandler = new ImageFileHandler($file, $type, $nominator_id, $nominee_id);
+			
+			if($filehandler->saveUpload())
+				$file_ids[] = $filehandler->_id;
+		}
+
+		if($this->$attribute_name != null || $this->$attribute_name != "") {
+			$this->$attribute_name = json_encode(array_merge(json_decode($this->$attribute_name), $file_ids));
+		} else {
+			$this->$attribute_name = json_encode($file_ids);
+		}
 
 		return $this->$attribute_name;
 	}
@@ -206,6 +232,52 @@ class ToymPortfolio extends CActiveRecord
 		}
 
 		return $updator->getFullName()." <small class='text-muted'>{$position}</small>";
+	}
+
+	public function printSupportingPhotosInput($attribute)
+	{
+		$labels = $this->attributeLabels();
+
+		for($x = 0; $x < 4; $x++){
+	        $supporting_photos = json_decode($this->$attribute); 
+	      	
+
+	        echo "<div class='form-group has-feedback'>";
+	        if($x == 0) {
+	          echo "<label class='col-sm-2 control-label' id='{$attribute}'>".$labels[$attribute]."</label>";
+	        } else {
+	          echo "<div class='col-sm-2' id='{$attribute}'></div>";
+	        }
+
+	        if(isset($supporting_photos[$x])) {
+	        	$file_path = ToymFileUploads::getFilePath( $supporting_photos[$x] );
+		        echo "	
+				<div class='col-sm-1'>
+					<a href='{$file_path}' target='_blank'>
+						<div class='img-prev-container'>
+							<img src='{$file_path}' />
+						</div>
+					</a>						
+				</div>
+				<div class='col-sm-9'>
+					<div class='btn-group btn-block' role='group' style='margin-top:8px;'>
+						<a href='{$file_path}' target='_blank' class='btn btn-info' data-toggle='tooltip' data-placement='top' title='Click to Load/View File Uploaded..'><i class='fa fa-search' style='margin-right:10px'></i><span style='margin-right:20px;'> View Image </span></a>
+	              		<span class='btn btn-danger delete-supporting-image' data-fid='{$supporting_photos[$x]}' data-attribute='{$attribute}' data-toggle='tooltip' data-placement='top' title='Click to Delete File Uploaded..'><i class='fa fa-trash' style='margin-right:10px'></i><span style='margin-right:20px;'> Delete Image </span></span>
+	            	</div>
+	            </div>";
+	        } else {
+	          echo "
+	          <input type='file' name='{$attribute}[]' class='file' data-allowed=\"{'jpg','jpeg','png'}\">
+	          <div class='input-group col-sm-8' style='padding:0 20px;'>
+	            <span class='input-group-btn'>
+	              <button class='browse btn btn-default' type='button'><i class='glyphicon glyphicon-plus'></i> Select File </button>
+	            </span>
+	            <input type='text' class='form-control filename-upload-container' disabled placeholder='No file selected..'>
+	          </div>";
+	        }
+
+	        echo "</div>";
+	      } 
 	}
 
 

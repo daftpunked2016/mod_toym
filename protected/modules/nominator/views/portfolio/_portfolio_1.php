@@ -1,3 +1,4 @@
+<input type="hidden" value="1" name="page" id="page_num" />
 <div class="box box-info">
   <div class="box-header with-border">
     <h3 class="box-title"><strong style="margin-right:5px;">V.</strong> <em class="text-muted">Nominee's Career Info</em></h3>
