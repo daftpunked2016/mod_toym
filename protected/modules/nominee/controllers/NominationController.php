@@ -45,6 +45,9 @@ class NominationController extends Controller
           }
         } catch (Exception $e) {
           $transaction->rollback();
+          echo "<pre>";
+          print_r($e);
+          echo "</pre>";
           Yii::app()->user->setFlash('error', 'Saving Failed! Please try again later or contact the System Administrator if it happened repeatedly.');
         }
       } else {
