@@ -129,6 +129,8 @@ class NominationsController extends Controller
 	    	$nominee_essays = ToymNomineeEssays::model()->find("nominee_id = {$nominee->id}");
 	    	$nominee_info = ToymNomineeInfo::model()->find("nominee_id = {$nominee->id}");
 
+	    	if($nominee_info == null) $nominee_info = new ToymNomineeInfo();
+	    	
 	    	echo $this->renderPartial('_view_details', [
 	    		'nominee'=>$nominee,
 	    		'nominator'=>$nominator,

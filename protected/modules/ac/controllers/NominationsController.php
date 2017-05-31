@@ -129,4 +129,30 @@ class NominationsController extends Controller
 			$this->redirect(["nominees?status={$status}"]);
 		}
 	}
+
+	public function actionViewDetails()
+	{
+		if(isset($_POST['id'])) {
+			$nominee_id = $_POST['id'];
+			$nominee =  ToymNominee::model()->findByPk($nominee_id);
+			$nominator = ToymNominator::model()->findByPk($nominee->nominator_id);
+	    	$nominee_essays = ToymNomineeEssays::model()->find("nominee_id = {$nominee->id}");
+	    	$nominee_info = ToymNomineeInfo::model()->find("nominee_id = {$nominee->id}");
+
+	    	if($nominee_info == null) $nominee_info = new ToymNomineeInfo();
+	    	
+	    	echo $this->renderPartial('_view_details', [
+	    		'nominee'=>$nominee,
+	    		'nominator'=>$nominator,
+	    		'nominee_essays'=>$nominee_essays,
+	    		'nominee_info'=>$nominee_info,
+	    		'categories'=>ToymCategory::model()->findAll(['order'=>'catname ASC']),
+				'subcategories'=>ToymSubcategory::model()->findAll(['order'=>'catdesc ASC']),
+				'chapters'=>Chapter::model()->findAll(['order'=>'chapter ASC','condition'=>'id != 334 AND id != 338 AND id != 339 AND id != 340 AND id != 341']),
+				'countries'=>Countries::model()->findAll(['order'=>'country_name ASC'])
+	    	]);
+		}
+	}
+
+
 }

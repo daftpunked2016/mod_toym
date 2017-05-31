@@ -5,6 +5,7 @@
 <script>
   $.widget.bridge('uibutton', $.ui.button);
 </script>
+<script src="<?php echo Yii::app()->request->baseUrl; ?>/page_assets/dev/js/dev.js"></script>
 <!-- Bootstrap 3.3.6 -->
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/page_assets/bootstrap/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>

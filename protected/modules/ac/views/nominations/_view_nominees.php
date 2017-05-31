@@ -39,7 +39,7 @@
 		</small>
 	</td>
 	<td>
-		<?= CHtml::link('<span class="btn-flat btn-info btn-xs"><i class="fa fa-search"></i></span> ', array('nominations/view', 'id' => $data->id), array('title' => 'View Nomination Details')); ?> 
+		<span class="btn-actions btn-flat btn-info btn-xs btn-view-details" title="View Nomination Details" data-loading-text="<i class='fa fa-spinner fa-spin'></i>" style="cursor:pointer;" data-id="<?= $data->id; ?>"><i class="fa fa-search"></i></span>
 		
 		<?php 
 			if($data->status == 3) {

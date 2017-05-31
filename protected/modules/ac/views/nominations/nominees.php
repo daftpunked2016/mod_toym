@@ -102,3 +102,49 @@ switch($status) {
 		</div>
 	</div>
 </section>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="viewDetailsModal">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel"><i class="fa fa-search"></i> View Nomination Details</h4>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+$(function() {
+	$(document).on('click', '.btn-view-details', function() {
+		$('.btn-actions').prop('disabled', true);
+		var $btn = $(this).button('loading');
+
+		$.ajax({
+	         url: site_url + '/ac/nominations/viewdetails',
+	         method: "POST",
+	         data: {'id': $(this).data('id')},
+	         success: function(response) {
+	            	details_html = response;
+	         },
+	         complete: function() {
+	         	$('.btn-actions').prop('disabled', false);
+	         	$btn.button('reset');
+	            
+	         	$('#viewDetailsModal').find('.modal-body').html(details_html);
+	         	$('#viewDetailsModal').modal('show');
+	         },
+	         error: function() {
+	              alert("ERROR in running requested function. Page will now reload.");
+	              location.reload();
+	         }
+	    });
+	});
+});
+</script>

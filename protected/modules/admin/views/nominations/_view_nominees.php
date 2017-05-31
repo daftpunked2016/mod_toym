@@ -39,7 +39,7 @@
 		</small>
 	</td>
 	<td>
-		<span class="btn-actions btn-flat btn-info btn-xs btn-view-details" data-loading-text="<i class='fa fa-spinner fa-spin'></i>" style="cursor:pointer;" data-id="<?= $data->id; ?>"><i class="fa fa-search"></i></span>
+		<span class="btn-actions btn-flat btn-info btn-xs btn-view-details" title="View Nomination Details" data-loading-text="<i class='fa fa-spinner fa-spin'></i>" style="cursor:pointer;" data-id="<?= $data->id; ?>"><i class="fa fa-search"></i></span>
 		<?php 
 			if($data->status == 2) {
 				echo CHtml::link('<span class="btn-actions btn-flat btn-success btn-xs"><i class="fa fa-check"></i></span> ', array('nominations/approve', 'id' => $data->id, 'status'=>$status), array('confirm' => "Are you sure you want to approve this nominee?", 'title' => 'Approve Nominee')).' ';
