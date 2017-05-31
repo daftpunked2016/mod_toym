@@ -23,22 +23,3 @@ FOR THE NOMINEE
 	6. I understand that the Organization reserve all legal rights and remedies in relation to concealment, non-disclosure or false disclosure of  information on my part.
 </p>
 <br />
-_______________________<br />
-Signature of the Nominee
-<br />
-<br />
-<p>
-SUBSCRIBED AND SWORN to before this <?= date('d'); ?> day of <?= date('F'); ?>, <?= date('Y'); ?> at ___________________ the affiant having exhibited tome his/her Resident Certificate No. ____________ issued at ______________ on ________________.
-</p>
-<br /> 
-<br /> 
- 
-Doc.No <br />
-Page No.<br />
-Until<br />
-PTR No.<br />
-Book No.<br />
-Series of<br />
-TAN<br />
-___________<br />
-TAN
