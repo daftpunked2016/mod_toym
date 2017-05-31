@@ -183,6 +183,7 @@ class PortfolioController extends Controller
     	$nominee_info = ToymNomineeInfo::model()->find("nominee_id = {$nominee_id}");
     	$nominator = ToymNominator::model()->findByPk($nominee->nominator_id);
 
+    	if(!$nominee_info) $nominee_info = new ToymNomineeInfo();
     	$nomination_info_validate = $nominee->validate() && $nominee_essays->validate() && $nominee_info->validate() && $nominator->validate();
     	$portfolio_validate = $portfolio->validate();
 
