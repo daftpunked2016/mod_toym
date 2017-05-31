@@ -38,7 +38,6 @@ class PortfolioController extends Controller
 			$nominator_id = Yii::app()->getModule('nominator')->user->id;
 			$nomination = ToymNomination::model()->find("nominator_id = {$nominator_id}");
 			$portfolio = ToymPortfolio::model()->find("nominator_id = {$nominator_id}");
-			$portfolio->setScenario('page'.$_POST['page']);
 			$response['type'] = false;
 			
 			if($portfolio == null) {
@@ -50,6 +49,8 @@ class PortfolioController extends Controller
 			} else {
 				$portfolio->updated_by = json_encode(['NR'=>$nominator_id]);
 			}
+
+			$portfolio->setScenario('page'.$_POST['page']);
 
 			if(isset($_POST['ToymPortfolio']))
 				$portfolio->attributes = $_POST['ToymPortfolio'];
