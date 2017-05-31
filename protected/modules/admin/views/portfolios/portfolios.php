@@ -66,14 +66,13 @@
 						<th>Date Updated</th>
 						<th>Last Updated By</th>
 						<th>Status</th>
-						<th>Action</th>
 					</thead>
 					<tbody>
 						{items}
 					</tbody>
 					</table>
 					{pager}",
-					'emptyText' => "<tr><td colspan=\"7\">No available entries</td></tr>",
+					'emptyText' => "<tr><td colspan=\"6\">No available entries</td></tr>",
 				));  ?>
 				</div>
 			</div>

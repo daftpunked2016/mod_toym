@@ -27,7 +27,7 @@
 	 	?>
 		</small>
 	</td>
-	<td>
-		<?= CHtml::link('<span class="btn-flat btn-info btn-xs"><i class="fa fa-search"></i></span> ', array('nominations/view', 'id' => $data->id), array('title' => 'View Nomination Details')); ?> 
-	</td>
+	<!-- <td>
+		<? //= CHtml::link('<span class="btn-flat btn-info btn-xs"><i class="fa fa-search"></i></span> ', array('nominations/view', 'id' => $data->id), array('title' => 'View Nomination Details')); ?> 
+	</td> -->
 </tr>
