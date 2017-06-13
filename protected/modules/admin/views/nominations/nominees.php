@@ -28,7 +28,10 @@ switch($status) {
 		$status_str = "Pending to AC";
 		break;
 	case 4:
-		$status_str = "Rejected";
+		$status_str = "Rejected by NC";
+		break;
+	case 5:
+		$status_str = "Rejected by AC";
 		break;
 	default:
 		$status_str = "*ALL";
@@ -54,7 +57,8 @@ switch($status) {
 							<option value="1" <?= (isset($_GET['status']) && $_GET['status'] == 1) ? 'selected' : null; ?> >Approved</option>
 							<option value="2"  <?= (isset($_GET['status']) && $_GET['status'] == 2) ? 'selected' : null; ?>>Pending</option>
 							<option value="3"  <?= (isset($_GET['status']) && $_GET['status'] == 3) ? 'selected' : null; ?>>Pending to AC</option>
-							<option value="4"  <?= (isset($_GET['status']) && $_GET['status'] == 4) ? 'selected' : null; ?>>Rejected</option>
+							<option value="4"  <?= (isset($_GET['status']) && $_GET['status'] == 4) ? 'selected' : null; ?>>Rejected by NC</option>
+							<option value="5"  <?= (isset($_GET['status']) && $_GET['status'] == 5) ? 'selected' : null; ?>>Rejected by AC</option>
 						</select>
 					</div>
 				</div>

@@ -14,7 +14,7 @@ class NominationsController extends Controller
 		$criteria = [];
 		$condition = '';
 
-		if($status == 1 || $status == 2 || $status == 3 || $status == 4) {
+		if($status == 1 || $status == 2 || $status == 3 || $status == 4 || $status == 5) {
 			$condition = "status = {$status}";
 		}
 
@@ -108,10 +108,10 @@ class NominationsController extends Controller
 			$connection = Yii::app()->db;
 			$transaction = $connection->beginTransaction();
 
-			$nominee->status = 4; //REJECTED
+			$nominee->status = 5; //REJECTED BY AC
 
 			$email_notification = new EmailWrapper;
-			$email_notification->setSubject('TOYM - JCIPH | REJECTION OF NOMINATION');
+			$email_notification->setSubject('TOYM - JCIPH | Nomination Status: Pending - Lack of Requirements');
 			$email_notification->setReceivers(array(
 				$nominee->nominator->email => $nominee->nominator->getFullName(),
 			));

@@ -15,6 +15,7 @@
             <li class=""><a href="<?= Yii::app()->createUrl('admin/nominations/nominees?status=2'); ?>"><i class="fa fa-circle-o"></i> Pending</a></li>
             <li><a href="<?= Yii::app()->createUrl('admin/nominations/nominees?status=1'); ?>"><i class="fa fa-check-circle-o"></i> Approved</a></li>
             <li><a href="<?= Yii::app()->createUrl('admin/nominations/nominees?status=4'); ?>"><i class="fa fa-times-circle-o"></i> Rejected</a></li>
+            <li><a href="<?= Yii::app()->createUrl('admin/nominations/nominees?status=5'); ?>"><i class="fa fa-times-circle-o"></i> Rejected by AC</a></li>
           </ul>
         </li>
 

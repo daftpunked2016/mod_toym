@@ -201,9 +201,12 @@ class ToymPortfolio extends CActiveRecord
 
 	public function validateWordCount($attribute, $params)
 	{	
-		$word_count = str_word_count($this->$attribute);
+		$input = strip_tags($this->$attribute);
+		$input = str_replace('/', ' ', $input);
+		$input = str_replace(',', ' ', $input);
+		$word_count = str_word_count(strip_tags($input));
 		//print_r($word_count);exit;
-		if( $word_count < 260 ) {
+		if( $word_count < 250 ) {
 			 $this->addError($attribute, 'Answer is below minimum word count (250 words).');
 		}
 	 	

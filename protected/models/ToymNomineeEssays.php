@@ -68,7 +68,7 @@ class ToymNomineeEssays extends CActiveRecord
 
 	public function validateWordCount($attribute, $params)
 	{	
-		$word_count = str_word_count($this->$attribute);
+		$word_count = str_word_count(strip_tags($this->$attribute));
 		//print_r($word_count);exit;
 		if( $word_count < 260 ) {
 			 $this->addError($attribute, 'Answer is below minimum word count (250 words).');

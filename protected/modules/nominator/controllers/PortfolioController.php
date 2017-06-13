@@ -213,7 +213,7 @@ class PortfolioController extends Controller
     		}
 
     		if($portfolio_validate == false) {
-    			$message .= "- Portfolio is still incomplete or some fields may have some validation errors. Try saving each page to see errors.";
+    			$message .= "- Portfolio is still incomplete or some fields may have some validation errors. Try running \"Save and Validate\" to each page to see errors.";
     		}
 
     		$response['message'] = $message;

@@ -95,7 +95,7 @@ $(document).ready(function() {
     }
   });
 
-  $(document).on('click', '#btn-save, .btn-pager', function() {
+  $(document).on('click', '.btn-save, .btn-pager', function() {
     for ( instance in CKEDITOR.instances )
      CKEDITOR.instances[instance].updateElement();
 
@@ -105,6 +105,7 @@ $(document).ready(function() {
     var formSerialized = form.serializeArray();
     var inputs = form.find('input, select:not([disabled=""]), button, textarea, .btn');
     var page = $(this).data('page');
+    var validate = $(this).data('validate');
 
     $.each(formSerialized,function(key,input){
       formData.append(input.name,input.value);
@@ -116,7 +117,7 @@ $(document).ready(function() {
       }
     });
 
-    if(page) {
+    if(page || validate != "1") {
       formData.append('change_page','1');
     }
 

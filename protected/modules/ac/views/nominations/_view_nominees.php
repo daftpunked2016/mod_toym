@@ -7,7 +7,7 @@
 		case 3:
 			echo "warning";
 			break;
-		case 4:
+		case 4: case 5:
 			echo "danger";
 			break;
 	} ?>">
@@ -32,7 +32,10 @@
 				echo "Pending";
 				break;
 			case 4:
-				echo "<strong>Rejected</strong>";
+				echo "<strong>Rejected by NC</strong>";
+				break;
+			case 5:
+				echo "<strong>Rejected by AC</strong>";
 				break;
 		}
 	 	?>
