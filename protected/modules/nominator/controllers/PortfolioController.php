@@ -15,6 +15,7 @@ class PortfolioController extends Controller
 	{
 		$nominator_id = Yii::app()->getModule('nominator')->user->id;
 		$portfolio = ToymPortfolio::model()->find("nominator_id = {$nominator_id}");
+		$submission_setting = ToymSettings::model()->find("code = 'portfolio_sub_status'");
 
 		if($portfolio == null) {
 			$portfolio = new ToymPortfolio();
@@ -26,7 +27,8 @@ class PortfolioController extends Controller
 
 		$this->render("build", [
 			'portfolio'=>$portfolio, 
-			'page'=>$page
+			'page'=>$page,
+			'submission_setting'=>$submission_setting,
 		]);
 	}
 

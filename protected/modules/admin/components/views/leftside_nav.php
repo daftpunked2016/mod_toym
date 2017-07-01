@@ -30,6 +30,12 @@
           		<i class="fa fa-user"></i> <span>Area Chairs</span>
         	</a>
       	</li>
+
+        <li>
+          <a href="<?= Yii::app()->createUrl('admin/settings/index'); ?>">
+              <i class="fa fa-gear"></i> <span>Settings</span>
+          </a>
+        </li>
     </ul>
   </section>
   <!-- /.sidebar -->

@@ -55,15 +55,17 @@ class NominationsController extends Controller
 	public function actionApprove($id, $status = null)
 	{
 		$nominee = ToymNominee::model()->findByPk($id);
-
+		
 		if($nominee)
 		{
+			$nominator = ToymNominator::model()->findByPk($nominee->nominator_id);
+
 			$connection = Yii::app()->db;
 			$transaction = $connection->beginTransaction();
 
-			$nominee->status = 2; //Approved to AC, Pending to NC/Admin
+			$nominee->status = $nominator->status_id = 2; //Approved to AC, Pending to NC/Admin
 
-			if($nominee->save()) {	
+			if($nominee->save() && $nominator->save()) {	
 				$transaction->commit();
 				Yii::app()->user->setFlash('success','Nomination successfully Approved');
 			} else {
@@ -82,12 +84,14 @@ class NominationsController extends Controller
 
 		if($nominee)
 		{
+			$nominator = ToymNominator::model()->findByPk($nominee->nominator_id);
+
 			$connection = Yii::app()->db;
 			$transaction = $connection->beginTransaction();
 
-			$nominee->status = 3; //PENDING
+			$nominee->status = $nominator->status_id = 3; //PENDING
 
-			if($nominee->save()) {	
+			if($nominee->save() && $nominator->save()) {	
 				$transaction->commit();
 				Yii::app()->user->setFlash('success','Nomination successfully reverted to Pending status.');
 			} else {
@@ -105,10 +109,12 @@ class NominationsController extends Controller
 
 		if($nominee)
 		{
+			$nominator = ToymNominator::model()->findByPk($nominee->nominator_id);
+
 			$connection = Yii::app()->db;
 			$transaction = $connection->beginTransaction();
 
-			$nominee->status = 5; //REJECTED BY AC
+			$nominee->status = $nominator->status_id = 5; //REJECTED BY AC
 
 			$email_notification = new EmailWrapper;
 			$email_notification->setSubject('TOYM - JCIPH | Nomination Status: Pending - Lack of Requirements');
@@ -118,7 +124,7 @@ class NominationsController extends Controller
 			$email_notification->setMessage($this->renderPartial('application.views.email_templates.nominee_reject_notif', ['nominee'=>$nominee], true));
 			$send_email = $email_notification->sendMessage();
 
-			if($nominee->save() && $send_email) {	
+			if($nominee->save() && $nominator->save() && $send_email) {	
 				$transaction->commit();
 				Yii::app()->user->setFlash('success','Nomination successfully Rejected');
 			} else {

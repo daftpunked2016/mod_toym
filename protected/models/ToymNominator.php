@@ -123,7 +123,7 @@ class ToymNominator extends CActiveRecord
 		if(parent::beforeSave()) {
 			if($this->isNewRecord) {
 				$this->salt = $this->generateSalt();
-				$this->status_id = 1; 
+				$this->status_id = 3; //AC Pending
 				$this->password = $this->hashPassword($this->password,$this->salt);
 			} else {
 				$this->date_updated = date('Y-m-d H:i');

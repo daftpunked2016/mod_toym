@@ -25,6 +25,8 @@
   <link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/page_assets/plugins/bootstrap-tagsinput/dist/bootstrap-tagsinput.css">
   <!-- Daterange picker -->
   <link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/page_assets/plugins/daterangepicker/daterangepicker.css">
+  <!-- Bootstrap toggle -->
+  <link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/page_assets/plugins/bootstrap-toggle/css/bootstrap-toggle.min.css">
   <!-- bootstrap wysihtml5 - text editor -->
   <link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/page_assets/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
 

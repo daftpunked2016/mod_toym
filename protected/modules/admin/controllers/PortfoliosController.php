@@ -8,6 +8,7 @@ class PortfoliosController extends Controller
 	{
 		$criteria = [];
 		$condition = '';
+		$nominator_condition = ['select' => false];
 
 		if($status == 1 || $status == 2) {
 			$condition = "t.status_id = {$status}";
@@ -22,10 +23,24 @@ class PortfoliosController extends Controller
 			$criteria['params'] = [':credentials'=>'%'.$_GET['credentials'].'%'];
 		}
 
-		$criteria['condition'] = $condition;
-		$criteria['order'] = 'nominator.date_created DESC'; 
+		if(isset($_GET['area_no']) && $_GET['area_no'] != "") {
+			$nominator_condition['condition'] = "chapter.area_no = :area_no";
+			$nominator_condition['join'] = "INNER JOIN jci_chapter AS chapter ON nominator.endorsing_chapter = chapter.id";
+			$nominator_condition['params'] = [':area_no'=>$_GET['area_no']];
+		}
 
-		$portfolios = ToymPortfolio::model()->with(['nominee', 'nominator'])->findAll($criteria);
+		if(isset($_GET['chapter_id']) && $_GET['chapter_id'] != "") {
+			$nominator_condition['condition'] = "nominator.endorsing_chapter = :chapter_id";
+			$nominator_condition['params'] = [':chapter_id' => $_GET['chapter_id']];
+		}
+
+		$criteria['condition'] = $condition;
+		$criteria['order'] = 'nominator.date_created DESC';
+
+		$portfolios = ToymPortfolio::model()->with([
+			'nominee',
+			'nominator'=>$nominator_condition
+		])->findAll($criteria);
 
 		$portfoliosDP=new CArrayDataProvider($portfolios, array(
 			'pagination' => array(
@@ -36,6 +51,7 @@ class PortfoliosController extends Controller
 		$this->render('portfolios', [
 			'portfoliosDP' => $portfoliosDP,
 			'status'=>$status,
+			'chapters'=>Chapter::model()->findAll(['order'=>'chapter ASC','condition'=>'id != 334 AND id != 338 AND id != 339 AND id != 340 AND id != 341']),
 		]);
 	}
 }

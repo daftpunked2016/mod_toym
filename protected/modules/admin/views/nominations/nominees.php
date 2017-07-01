@@ -62,6 +62,30 @@ switch($status) {
 						</select>
 					</div>
 				</div>
+				<div class="col-md-6">
+					<div class="form-group">
+						<label for="area_no">Area</label>
+						<select class="form-control" name="area_no" id="area-no"> 
+							<option value="">*ALL</option>
+							<option value="1" <?= (isset($_GET['area_no']) && $_GET['area_no'] == 1) ? 'selected' : null; ?> >1</option>
+							<option value="2"  <?= (isset($_GET['area_no']) && $_GET['area_no'] == 2) ? 'selected' : null; ?>>2</option>
+							<option value="3"  <?= (isset($_GET['area_no']) && $_GET['area_no'] == 3) ? 'selected' : null; ?>>3</option>
+							<option value="4"  <?= (isset($_GET['area_no']) && $_GET['area_no'] == 4) ? 'selected' : null; ?>>4</option>
+							<option value="5"  <?= (isset($_GET['area_no']) && $_GET['area_no'] == 5) ? 'selected' : null; ?>>5</option>
+						</select>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="form-group">
+						<label for="area_no">Chapter</label>
+						<select class="form-control" name="chapter_id" id="chapter-id">
+							<option value="">*ALL</option>
+							<?php foreach($chapters as $chapter): ?>
+								<option class="chapter-options" value="<?= $chapter->id; ?>" data-area="<?= $chapter->area_no; ?>" <?= (isset($_GET['chapter_id']) && $chapter->id == $_GET['chapter_id']) ? 'selected' : null; ?>><?= $chapter->chapter; ?></option>
+							<?php endforeach; ?>
+						</select>
+					</div>
+				</div>
 				<div class="col-md-12">
 					<div class="form-group">
 						<button class="btn btn-info pull-right"><i class="fa fa-search"></i> Search</button>
@@ -127,6 +151,16 @@ switch($status) {
 
 <script>
 $(function() {
+	$(document).on('click', '#area-no', function() {
+		if($(this).val() == "") {
+			$('#chapter-id').children('option.chapter-options').show();
+		} else {
+			$('#chapter-id').children('option.chapter-options').hide();
+			$('#chapter-id').children('option.chapter-options[data-area="'+$(this).val()+'"]').show();
+		}
+		
+	});
+
 	$(document).on('click', '.btn-view-details', function() {
 		$('.btn-actions').prop('disabled', true);
 		var $btn = $(this).button('loading');

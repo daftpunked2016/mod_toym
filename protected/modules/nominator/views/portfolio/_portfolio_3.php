@@ -113,7 +113,7 @@
   <!-- /.box-body -->
 </div>
 
-<?php if($portfolio->status_id != 1): ?>
+<?php if($portfolio->status_id != 1 && $submission_setting->status == 1): ?>
 <div class="box box-info">
   <div class="box-header with-border">
     <h3 class="box-title"><strong style="margin-right:5px;">VIII.</strong> <em class="text-muted">Waiver</em></h3>

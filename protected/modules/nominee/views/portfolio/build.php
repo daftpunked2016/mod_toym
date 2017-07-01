@@ -70,7 +70,8 @@
 
     <?= $this->renderPartial("_portfolio_{$page}", [
       'portfolio'=>$portfolio, 
-      'form'=>$form
+      'form'=>$form,
+      'submission_setting'=>$submission_setting,
     ]); ?>
 
 
@@ -82,7 +83,7 @@
           <button type="button" class="btn btn-save btn-primary btn-lg" data-validate="0" data-loading-text="<i class='fa fa-spinner fa-spin'></i> Saving.."> <i class="fa fa-check"></i> Save </button>
           <button type="button" class="btn btn-save btn-warning btn-lg" data-validate="1" data-loading-text="<i class='fa fa-spinner fa-spin'></i> Saving.."> <i class="fa fa-check-square-o"></i> Save & Validate </button>
            
-          <?php if($page == 3 && $portfolio->status_id != 1): ?>  
+          <?php if($page == 3 && $portfolio->status_id != 1 && $submission_setting->status == 1): ?>  
             <button type="button" id="btn-submit" class="btn btn-success btn-lg" disabled data-agree="0" data-toggle="tooltip" data-placement="top" title="You must AGREE first with the waiver statements." data-loading-text="<i class='fa fa-spinner fa-spin'></i> Processing.."> <i class="fa fa-send"></i> SUBMIT PORTFOLIO </button>
           <?php endif; ?>
         </div>

@@ -13,6 +13,7 @@ class NominationsController extends Controller
 	{
 		$criteria = [];
 		$condition = '';
+		$nominator_condition = ['select' => false];
 
 		if($status == 1 || $status == 2 || $status == 3 || $status == 4 || $status == 5) {
 			$condition = "status = {$status}";
@@ -27,10 +28,21 @@ class NominationsController extends Controller
 			$criteria['params'] = [':credentials'=>'%'.$_GET['credentials'].'%'];
 		}
 
+		if(isset($_GET['area_no']) && $_GET['area_no'] != "") {
+			$nominator_condition['condition'] = "chapter.area_no = :area_no";
+			$nominator_condition['join'] = "INNER JOIN jci_chapter AS chapter ON nominator.endorsing_chapter = chapter.id";
+			$nominator_condition['params'] = [':area_no'=>$_GET['area_no']];
+		}
+
+		if(isset($_GET['chapter_id']) && $_GET['chapter_id'] != "") {
+			$nominator_condition['condition'] = "nominator.endorsing_chapter = :chapter_id";
+			$nominator_condition['params'] = [':chapter_id' => $_GET['chapter_id']];
+		}
+
 		$criteria['condition'] = $condition;
 		$criteria['order'] = 't.date_created DESC'; 
 
-		$nominees = ToymNominee::model()->with('nominator')->findAll($criteria);
+		$nominees = ToymNominee::model()->with(['nominator'=>$nominator_condition])->findAll($criteria);
 
 		$nomineesDP=new CArrayDataProvider($nominees, array(
 			'pagination' => array(
@@ -41,6 +53,7 @@ class NominationsController extends Controller
 		$this->render('nominees', [
 			'nomineesDP' => $nomineesDP,
 			'status'=>$status,
+			'chapters'=>Chapter::model()->findAll(['order'=>'chapter ASC','condition'=>'id != 334 AND id != 338 AND id != 339 AND id != 340 AND id != 341']),
 		]);
 	}
 
@@ -50,10 +63,13 @@ class NominationsController extends Controller
 
 		if($nominee->approveNomination())
 		{
+			$nominator = ToymNominator::model()->findByPk($nominee->nominator_id);
+			$nominator->status_id = 1;
+
 			$connection = Yii::app()->db;
 			$transaction = $connection->beginTransaction();
 			
-			if($nominee->save()) {	
+			if($nominee->save() && $nominator->save()) {	
 				$transaction->commit();
 				Yii::app()->user->setFlash('success','Nomination successfully Approved');
 			} else {
@@ -72,12 +88,15 @@ class NominationsController extends Controller
 
 		if($nominee)
 		{
+			$nominator = ToymNominator::model()->findByPk($nominee->nominator_id);
+
 			$connection = Yii::app()->db;
 			$transaction = $connection->beginTransaction();
 
-			$nominee->status = 2; //PENDING
+			$nominee->status = $nominator->status_id = 2; //PENDING
 
-			if($nominee->save()) {	
+
+			if($nominee->save() && $nominator->save()) {	
 				$transaction->commit();
 				Yii::app()->user->setFlash('success','Nomination successfully reverted to Pending status.');
 			} else {
@@ -95,10 +114,12 @@ class NominationsController extends Controller
 
 		if($nominee)
 		{
+			$nominator = ToymNominator::model()->findByPk($nominee->nominator_id);
+
 			$connection = Yii::app()->db;
 			$transaction = $connection->beginTransaction();
 
-			$nominee->status = 4; //REJECTED BY NC
+			$nominee->status = $nominator->status_id = 4; //REJECTED BY NC
 
 			$email_notification = new EmailWrapper;
 			$email_notification->setSubject('TOYM - JCIPH | Nomination Status: Pending - Lack of Requirements');
@@ -108,7 +129,7 @@ class NominationsController extends Controller
 			$email_notification->setMessage($this->renderPartial('application.views.email_templates.nominee_reject_notif', ['nominee'=>$nominee], true));
 			$send_email = $email_notification->sendMessage();
 
-			if($nominee->save() && $send_email) {	
+			if($nominee->save() && $nominator->save() && $send_email) {	
 				$transaction->commit();
 				Yii::app()->user->setFlash('success','Nomination successfully Rejected');
 			} else {

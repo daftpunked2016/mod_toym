@@ -29,6 +29,8 @@ class SiteController extends Controller
 	 */
 	public function actionIndex()
 	{
+		$nomination_setting = ToymSettings::model()->find("code = 'nomination_status'");
+		if($nomination_setting->status == 0) { $this->redirect(['site/disabled']); }
 		// renders the view file 'protected/views/site/index.php'
 		// using the default layout 'protected/views/layouts/main.php'
 		if(isset(Yii::app()->session['member'])) { $this->redirect(['site/nominate']); }
@@ -38,6 +40,9 @@ class SiteController extends Controller
 
 	public function actionCheckLogin()
 	{
+		$nomination_setting = ToymSettings::model()->find("code = 'nomination_status'");
+		if($nomination_setting->status == 0) { $this->redirect(['site/disabled']); }
+
 		if(isset(Yii::app()->session['member'])) { $this->redirect(['site/nominate']); }
 
 		$this->render('check_login', []);
@@ -45,6 +50,9 @@ class SiteController extends Controller
 
 	public function actionProceedNominate()
 	{
+		$nomination_setting = ToymSettings::model()->find("code = 'nomination_status'");
+		if($nomination_setting->status == 0) { $this->redirect(['site/disabled']); }
+
 		if(isset($_POST['Account']) && !empty($_POST['Account'])) {
 			$credentials = $_POST['Account'];
 			$account_auth = Account::authenticate($credentials['username'], $credentials['password']);
@@ -68,6 +76,14 @@ class SiteController extends Controller
 		Yii::app()->session->clear();
 		Yii::app()->session->destroy();
 		$this->redirect(['site/checklogin']);
+	}
+
+	public function actionDisabled()
+	{
+		$nomination_setting = ToymSettings::model()->find("code = 'nomination_status'");
+		if($nomination_setting->status == 1) { $this->redirect(['site/checklogin']); }
+
+		$this->render('disabled');
 	}
 
 	public function actionNominate()
@@ -167,7 +183,6 @@ class SiteController extends Controller
 			'subcategories'=>ToymSubcategory::model()->findAll(['order'=>'catdesc ASC']),
 			'chapters'=>Chapter::model()->findAll(['order'=>'chapter ASC','condition'=>'id != 334 AND id != 338 AND id != 339 AND id != 340 AND id != 341']),
 			'countries'=>Countries::model()->findAll(['order'=>'country_name ASC'])
-
 		]);
 	}
 
@@ -212,5 +227,29 @@ class SiteController extends Controller
 	{
 		Yii::app()->user->logout();
 		$this->redirect(Yii::app()->homeUrl);
+	}
+
+	public function actionViewDetails()
+	{
+		if(isset($_POST['id'])) {
+			$nominee_id = $_POST['id'];
+			$nominee =  ToymNominee::model()->findByPk($nominee_id);
+			$nominator = ToymNominator::model()->findByPk($nominee->nominator_id);
+	    	$nominee_essays = ToymNomineeEssays::model()->find("nominee_id = {$nominee->id}");
+	    	$nominee_info = ToymNomineeInfo::model()->find("nominee_id = {$nominee->id}");
+
+	    	if($nominee_info == null) $nominee_info = new ToymNomineeInfo();
+	    	
+	    	echo $this->renderPartial('//../modules/admin/views/nominations/_view_details', [
+	    		'nominee'=>$nominee,
+	    		'nominator'=>$nominator,
+	    		'nominee_essays'=>$nominee_essays,
+	    		'nominee_info'=>$nominee_info,
+	    		'categories'=>ToymCategory::model()->findAll(['order'=>'catname ASC']),
+				'subcategories'=>ToymSubcategory::model()->findAll(['order'=>'catdesc ASC']),
+				'chapters'=>Chapter::model()->findAll(['order'=>'chapter ASC','condition'=>'id != 334 AND id != 338 AND id != 339 AND id != 340 AND id != 341']),
+				'countries'=>Countries::model()->findAll(['order'=>'country_name ASC'])
+	    	]);
+		}
 	}
 }
