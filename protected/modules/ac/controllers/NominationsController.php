@@ -13,6 +13,8 @@ class NominationsController extends Controller
 	{
 		$criteria = [];
 		$condition = '';
+		$nominator_condition = [ 'select' => false ];
+		$area_no = Yii::app()->getModule('ac')->user->getState('area_no');
 
 		if($status == 1 || $status == 2 || $status == 3 || $status == 4 || $status == 5) {
 			$condition = "status = {$status}";
@@ -27,16 +29,20 @@ class NominationsController extends Controller
 			$criteria['params'] = [':credentials'=>'%'.$_GET['credentials'].'%'];
 		}
 
+		if(isset($_GET['chapter_id']) && $_GET['chapter_id'] != "") {
+			$nominator_condition['condition'] = "nominator.endorsing_chapter = :chapter_id";
+			$nominator_condition['params'] = [':chapter_id' => $_GET['chapter_id']];
+		} else {
+			$nominator_condition['condition'] = "chapter.area_no = ".$area_no;
+			$nominator_condition['join'] = "INNER JOIN jci_chapter AS chapter ON nominator.endorsing_chapter = chapter.id";
+		}
+
 		$criteria['condition'] = $condition;
 		$criteria['order'] = 't.date_created DESC'; 
 
 		$nominees = ToymNominee::model()
 			->with([
-				'nominator'=>[
-					'select'=> false,
-					'condition'=> "chapter.area_no = ".Yii::app()->getModule('ac')->user->getState('area_no'),
-            		'join' => "INNER JOIN jci_chapter AS chapter ON nominator.endorsing_chapter = chapter.id",
-				]   
+				'nominator'=> $nominator_condition 
 			])
 			->findAll($criteria);
 
@@ -49,6 +55,7 @@ class NominationsController extends Controller
 		$this->render('nominees', [
 			'nomineesDP' => $nomineesDP,
 			'status'=>$status,
+			'chapters'=>Chapter::model()->findAll(['order'=>'chapter ASC','condition'=>'area_no = '.$area_no.' AND id != 334 AND id != 338 AND id != 339 AND id != 340 AND id != 341']),
 		]);
 	}
 

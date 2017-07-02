@@ -42,14 +42,14 @@ switch($status) {
 <section class="content">
 	<div class="well" style="padding: 10px;">
 		<div class="row">
-			<form method="GET">
-				<div class="col-md-6">
+			<form method="GET" action="<?= Yii::app()->createUrl('ac/nominations/nominees'); ?>">
+				<div class="col-md-4">
 					<div class="form-group">
 						<label for="credentials">Search</label>
 						<input type="text" class="form-control" name="credentials" placeholder="Nominee Name / Nominee E-mail / Nominator Name" value="<?= (isset($_GET['credentials'])) ? $_GET['credentials'] : null; ?>" />
 					</div>
 				</div>
-				<div class="col-md-6">
+				<div class="col-md-4">
 					<div class="form-group">
 						<label for="status">Status</label>
 						<select class="form-control" name="status">
@@ -59,6 +59,17 @@ switch($status) {
 							<option value="3"  <?= (isset($_GET['status']) && $_GET['status'] == 3) ? 'selected' : null; ?>>Pending</option>
 							<option value="4"  <?= (isset($_GET['status']) && $_GET['status'] == 4) ? 'selected' : null; ?>>Rejected by NC</option>
 							<option value="4"  <?= (isset($_GET['status']) && $_GET['status'] == 4) ? 'selected' : null; ?>>Rejected by AC</option>
+						</select>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="form-group">
+						<label for="area_no">Chapter</label>
+						<select class="form-control" name="chapter_id" id="chapter-id">
+							<option value="">*ALL</option>
+							<?php foreach($chapters as $chapter): ?>
+								<option class="chapter-options" value="<?= $chapter->id; ?>" data-area="<?= $chapter->area_no; ?>" <?= (isset($_GET['chapter_id']) && $chapter->id == $_GET['chapter_id']) ? 'selected' : null; ?>><?= $chapter->chapter; ?></option>
+							<?php endforeach; ?>
 						</select>
 					</div>
 				</div>

@@ -6,7 +6,30 @@ class DefaultController extends Controller
 	
 	public function actionIndex()
 	{
-		$this->redirect(['nominations/nominees']);
+		$area_no = Yii::app()->getModule('ac')->user->getState('area_no');
+		$area_regions = AreaRegion::model()->findAll("area_no = {$area_no}");
+
+		$this->render('index', [
+			'area_regions'=>$area_regions,
+			'area_no' => $area_no,
+		]);
+	}
+
+	public function actionListChapters($rid)
+	{
+		$region = AreaRegion::model()->findByPk($rid);
+		$chapters = Chapter::model()->findAll(array('condition'=>'region_id = :rid', 'params'=>array(':rid'=>$rid)));
+		
+		$chaptersDP=new CArrayDataProvider($chapters, array(
+			'pagination' => array(
+		        'pageSize'=>50,
+		    ),
+		));
+
+		$this->render('chapters', array(
+			'chaptersDP'=>$chaptersDP,
+			'region'=>$region,
+		));
 	}
 
 	public function actionLogin()

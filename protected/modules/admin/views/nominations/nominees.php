@@ -42,7 +42,7 @@ switch($status) {
 <section class="content">
 	<div class="well" style="padding: 10px;">
 		<div class="row">
-			<form method="GET">
+			<form method="GET" action="<?= Yii::app()->createUrl('admin/nominations/nominees'); ?>">
 				<div class="col-md-6">
 					<div class="form-group">
 						<label for="credentials">Search</label>

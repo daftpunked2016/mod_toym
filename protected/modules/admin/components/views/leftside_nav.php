@@ -4,6 +4,12 @@
     <!-- sidebar menu: : style can be found in sidebar.less -->
     <ul class="sidebar-menu">
       	<li class="header">MAIN NAVIGATION</li>
+        <li>
+          <a href="<?= Yii::app()->createUrl('admin/default/index'); ?>">
+              <i class="fa fa-dashboard"></i> <span>Dashboard</span>
+          </a>
+        </li>
+
        	<li class="treeview active">
           <a href="#">
            	<i class="fa fa-user-plus"></i> <span>Nominations</span>

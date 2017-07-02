@@ -6,7 +6,35 @@ class DefaultController extends Controller
 
 	public function actionIndex()
 	{
-		$this->redirect(['nominations/nominees']);
+		$area_regions = AreaRegion::model()->findAll();
+		$area_regions_arr = [];
+
+		foreach($area_regions as $region) {
+			if(!isset($area_regions_arr[$region->area_no])) {
+				$area_regions_arr[$region->area_no] = [$region];
+			} else {
+				$area_regions_arr[$region->area_no][] = $region;
+			}
+		}
+
+		$this->render('index', ['area_regions'=>$area_regions_arr]);
+	}
+
+	public function actionListChapters($rid)
+	{
+		$region = AreaRegion::model()->findByPk($rid);
+		$chapters = Chapter::model()->findAll(array('condition'=>'region_id = :rid', 'params'=>array(':rid'=>$rid)));
+		
+		$chaptersDP=new CArrayDataProvider($chapters, array(
+			'pagination' => array(
+		        'pageSize'=>50,
+		    ),
+		));
+
+		$this->render('chapters', array(
+			'chaptersDP'=>$chaptersDP,
+			'region'=>$region,
+		));
 	}
 
 	public function actionLogin()

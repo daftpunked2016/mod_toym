@@ -232,6 +232,31 @@ class ToymNominator extends CActiveRecord
 		}
 	}
 
+	public function getRegionCount($rid)
+	{
+		$count = self::model()
+						->with(array(
+							'chapter'=>array(
+								'condition'=>'region_id = :rid', 
+									'params'=>array(
+										':rid'=>$rid,
+						))))->count();
+		return $count;
+	}
+
+	public function getAreaCount($aid)
+	{
+		$count = self::model()
+						->with(array(
+							'chapter'=>array(
+								'condition'=>'area_no = :aid', 
+									'params'=>array(
+										':aid'=>$aid,
+						))))->count();
+		return $count;
+	}
+
+
 	public function validatePassword($password)
 	{
 		return $this->hashPassword($password,$this->salt) === $this->password;
