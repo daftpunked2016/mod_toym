@@ -242,9 +242,12 @@ class ToymNominee extends CActiveRecord
 		return parent::model($className);
 	}
 
-	public function getFullName()
+	public function getFullName($with_title = false, $with_middlename = false)
 	{
-		return $this->firstname.' '.$this->lastname;
+		$title = ($with_title) ? $this->title.' ' : null; 
+		$middlename = ($with_middlename) ? $this->middlename.' ' : null; 
+	
+		return $title.$this->firstname.' '.$middlename.$this->lastname;
 	}
 
 	public function approveNomination()

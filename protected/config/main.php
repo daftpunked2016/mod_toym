@@ -17,6 +17,7 @@ return array(
 	'import'=>array(
 		'application.models.*',
 		'application.components.*',
+		'application.extensions.*',
 	),
 
 	'modules'=>array(
@@ -37,6 +38,30 @@ return array(
 
 	// application components
 	'components'=>array(
+		'ePdf' => array(
+			'class'	=> 'ext.yii-pdf.EYiiPdf',
+			'params' => array(
+				'mpdf'=> array(
+					'librarySourcePath' => 'ext.mpdf.*',
+					'constants'			=> array(
+						'_MPDF_TEMP_PATH' => Yii::getPathOfAlias('application.runtime'),
+					),
+					'classFile' => 'mpdf.php',
+				),
+				'HTML2PDF' => array(
+					'librarySourcePath' => 'ext.html2pdf.src.*',
+					'classFile'			=> 'html2pdf.php', // For adding to Yii::$classMap
+					/*'defaultParams'	  => array( // More info: http://wiki.spipu.net/doku.php?id=html2pdf:en:v4:accueil
+						'orientation' => 'P', // landscape or portrait orientation
+						'format'	  => 'A4', // format A4, A5, ...
+						'language'	  => 'en', // language: fr, en, it ...
+						'unicode'	  => true, // TRUE means clustering the input text IS unicode (default = true)
+						'encoding'	  => 'UTF-8', // charset encoding; Default is UTF-8
+						'marges'	  => array(5, 5, 5, 8), // margins by default, in order (left, top, right, bottom)
+					)*/
+				)
+			),
+		),
 
 		'user'=>array(
 			// enable cookie-based authentication

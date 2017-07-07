@@ -22,3 +22,5 @@
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/page_assets/dist/js/app.min.js"></script>
 <!-- Bootstrap Tagsinput -->
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/page_assets/plugins/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js"></script>
+<!-- Select2 -->
+<script src="<?php echo Yii::app()->request->baseUrl; ?>/page_assets/plugins/select2/select2.min.js"></script>

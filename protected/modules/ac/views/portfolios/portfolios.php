@@ -66,6 +66,7 @@
 						<th>Date Updated</th>
 						<th>Last Updated By</th>
 						<th>Status</th>
+						<th>Actions</th>
 					</thead>
 					<tbody>
 						{items}

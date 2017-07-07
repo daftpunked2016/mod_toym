@@ -52,10 +52,14 @@ class NominationsController extends Controller
 			)
 		));
 
+		$chapters = Chapter::model()->findAll(['order'=>'chapter ASC','condition'=>'id != 334 AND id != 338 AND id != 339 AND id != 340 AND id != 341']);
+		$chapters_indexed = CHtml::listData($chapters, 'id', 'chapter');
+
 		$this->render('nominees', [
 			'nomineesDP' => $nomineesDP,
 			'status'=>$status,
-			'chapters'=>Chapter::model()->findAll(['order'=>'chapter ASC','condition'=>'area_no = '.$area_no.' AND id != 334 AND id != 338 AND id != 339 AND id != 340 AND id != 341']),
+			'chapters'=> $chapters,
+			'chapters_indexed'=>$chapters_indexed
 		]);
 	}
 
@@ -165,6 +169,27 @@ class NominationsController extends Controller
 				'countries'=>Countries::model()->findAll(['order'=>'country_name ASC'])
 	    	]);
 		}
+	}
+
+	public function actionUpdateEndorsingChapters()
+	{
+		$response = ['type' => false];
+
+		if(isset($_POST['nominator_id']))
+		{
+			$nominator = ToymNominator::model()->findByPk($_POST['nominator_id']);
+			$nominator->additional_endorsing_chapter = (!isset($_POST['additional_endorsing_chapters'])) ? null : json_encode($_POST['additional_endorsing_chapters']);
+
+			if($nominator->save()) {	
+				$response['type'] = true;
+				$response['message'] = "Nominee's Endorsing Chapters has been updated successfully";
+			} else {
+				$response['message'] = 'Saving Failed! Please try again later or contact the System Administrator if it happened repeatedly.';
+			}
+		}
+
+		echo json_encode($response);
+    	exit;
 	}
 
 

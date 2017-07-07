@@ -27,7 +27,8 @@
 	 	?>
 		</small>
 	</td>
-	<!-- <td>
-		<? //= CHtml::link('<span class="btn-flat btn-info btn-xs"><i class="fa fa-search"></i></span> ', array('nominations/view', 'id' => $data->id), array('title' => 'View Nomination Details')); ?> 
-	</td> -->
+	<td>
+		<?= CHtml::link('<span class="btn-flat btn-info btn-xs"><i class="fa fa-search"></i></span> ', array('portfolios/view', 'id' => $data->id ), array('title' => 'View Portfolio PDF', 'target'=>'_blank')); ?> 
+		<?= CHtml::link('<span class="btn-flat btn-primary btn-xs"><i class="fa fa-download"></i></span> ', array('portfolios/download', 'id' => $data->id ), array('title' => 'Download Portfolio PDF', 'target'=>'_blank')); ?> 
+	</td>
 </tr>

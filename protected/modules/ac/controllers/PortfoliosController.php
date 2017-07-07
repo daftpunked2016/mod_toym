@@ -2,6 +2,8 @@
 
 class PortfoliosController extends Controller
 {
+	use BasicHelper;
+	
 	public $layout = '/layouts/main';
 
 	public function actionIndex($status = null)
@@ -43,5 +45,25 @@ class PortfoliosController extends Controller
 			'portfoliosDP' => $portfoliosDP,
 			'status'=>$status,
 		]);
+	}
+
+	public function actionView($id)
+	{ 
+		$portfolio = ToymPortfolio::model()->findByPk($id);
+		$pdf_filename = $portfolio->generatePdf();
+		$pdf_filepath = 'page_assets/pdfs/'.$pdf_filename;
+
+		$this->readViewPdf($pdf_filename, $pdf_filepath);
+		unlink($pdf_filepath);
+	}
+
+	public function actionDownload($id)
+	{ 
+		$portfolio = ToymPortfolio::model()->findByPk($id);
+		$pdf_filename = $portfolio->generatePdf();
+		$pdf_filepath = 'page_assets/pdfs/'.$pdf_filename;
+
+		$this->downloadPdf($pdf_filename, $pdf_filepath);
+		unlink($pdf_filepath);
 	}
 }

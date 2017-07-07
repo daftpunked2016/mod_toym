@@ -102,10 +102,15 @@ class ToymFileUploads extends CActiveRecord
 		));
 	}
 
-	public static function getFilePath($id)
+	public static function getFilePath($id, $for_pdf = false)
 	{
 		$file = self::model()->findByPk($id);
-		$file_path = Yii::app()->baseUrl."/fileuploads";
+		if($for_pdf) {
+			$file_path = 'fileuploads';
+		} else {
+			$file_path = Yii::app()->baseUrl."/fileuploads";
+		}
+		
 
 		switch($file->type) {
 			case "P":

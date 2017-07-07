@@ -2,6 +2,8 @@
 
 class PortfoliosController extends Controller
 {
+	use BasicHelper;
+
 	public $layout = '/layouts/main';
 
 	public function actionIndex($status = null)
@@ -54,4 +56,25 @@ class PortfoliosController extends Controller
 			'chapters'=>Chapter::model()->findAll(['order'=>'chapter ASC','condition'=>'id != 334 AND id != 338 AND id != 339 AND id != 340 AND id != 341']),
 		]);
 	}
+
+	public function actionView($id)
+	{ 
+		$portfolio = ToymPortfolio::model()->findByPk($id);
+		$pdf_filename = $portfolio->generatePdf();
+		$pdf_filepath = 'page_assets/pdfs/'.$pdf_filename;
+
+		$this->readViewPdf($pdf_filename, $pdf_filepath);
+		unlink($pdf_filepath);
+	}
+
+	public function actionDownload($id)
+	{ 
+		$portfolio = ToymPortfolio::model()->findByPk($id);
+		$pdf_filename = $portfolio->generatePdf();
+		$pdf_filepath = 'page_assets/pdfs/'.$pdf_filename;
+
+		$this->downloadPdf($pdf_filename, $pdf_filepath);
+		unlink($pdf_filepath);
+	}
+
 }

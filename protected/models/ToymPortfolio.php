@@ -283,6 +283,136 @@ class ToymPortfolio extends CActiveRecord
 	      } 
 	}
 
+	public function generatePdf()
+	{
+		$nominator = $this->nominator;
+		$nominee = $this->nominee;
+		$nominee_info = ToymNomineeInfo::model()->find("nominee_id = {$this->nominee_id}");
+		$nominee_essays = ToymNomineeEssays::model()->find("nominee_id = {$this->nominee_id}");
+		$chapters = Chapter::model()->findAll(['order'=>'chapter ASC','condition'=>'id != 334 AND id != 338 AND id != 339 AND id != 340 AND id != 341']);
+		$chapters_indexed = CHtml::listData($chapters, 'id', 'chapter');
+		$additional_files = "";
+
+		$pdf = new MYPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+		spl_autoload_register(array('YiiBase','autoload'));
+
+		// set document information
+		$pdf->SetCreator(PDF_CREATOR);  
+		$pdf->SetTitle("JCI TOYM PORTFOLIO");                
+		$pdf->SetHeaderData('');
+		$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+		$pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+		$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+		$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+		$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+		$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+		$pdf->SetFont('helvetica', '', 9);
+		$pdf->SetTextColor("Black"); 
+		$pdf->SetPrintHeader(false);
+		$pdf->SetPrintFooter(false);
+	
+	
+		// PAGE
+		$pdf->addPage();
+		$pdf->writeHTML(Yii::app()->controller->renderPartial('_portfolio_page_1',['nominator'=>$nominator, 'nominee'=>$nominee, 'chapters_indexed'=>$chapters_indexed],true) , true, false, true, false, '');
+		$pdf->setPage(1);
+
+		// PAGE
+		$pdf->addPage();
+		$pdf->writeHTML(Yii::app()->controller->renderPartial('_portfolio_page_2',['nominee'=>$nominee,'nominee_info'=>$nominee_info,],true) , true, false, true, false, '');
+		$pdf->setPage(2);
+
+		// PAGE
+		$pdf->addPage();
+		$pdf->writeHTML(Yii::app()->controller->renderPartial('_portfolio_page_3',['nominee_info'=>$nominee_info,],true) , true, false, true, false, '');
+
+		// PAGE
+		$pdf->addPage();
+		$pdf->writeHTML(Yii::app()->controller->renderPartial('_portfolio_page_4',['portfolio'=>$this, 'nominee_essays'=>$nominee_essays],true) , true, false, true, false, '');
+
+		// PAGE
+		$pdf->addPage();
+		$pdf->writeHTML(Yii::app()->controller->renderPartial('_portfolio_page_images',['images'=>$this->supporting_photo_1, 'set'=>1],true) , true, false, true, false, '');
+
+		// PAGE
+		$pdf->addPage();
+		$pdf->writeHTML(Yii::app()->controller->renderPartial('_portfolio_page_images',['images'=>$this->supporting_photo_2, 'set'=>2],true) , true, false, true, false, '');
+
+		// PAGE
+		$pdf->addPage();
+		$pdf->writeHTML(Yii::app()->controller->renderPartial('_portfolio_page_images',['images'=>$this->supporting_photo_3, 'set'=>3],true) , true, false, true, false, '');
+
+		// PAGE
+		$pdf->addPage();
+		$pdf->writeHTML(Yii::app()->controller->renderPartial('_portfolio_page_images',['images'=>$this->supporting_photo_4, 'set'=>4],true) , true, false, true, false, '');
+
+		// PAGE
+		$pdf->addPage();
+		$pdf->writeHTML(Yii::app()->controller->renderPartial('_portfolio_page_5',['nominator'=>$nominator],true) , true, false, true, false, '');
+
+		// PAGE
+		$pdf->addPage();
+		$pdf->writeHTML(Yii::app()->controller->renderPartial('_portfolio_page_documents',['portfolio'=>$this],true) , true, false, true, false, '');
+
+		if($this->id_birth_cert_upload_id != "") {
+			$file = ToymFileUploads::model()->findByPk($this->id_birth_cert_upload_id);
+
+			if(strtolower($file->file_extension) != "pdf") {
+				$pdf->addPage();
+				$pdf->writeHTML(Yii::app()->controller->renderPartial('_portfolio_page_documents2',['file_upload_id'=>$this->id_birth_cert_upload_id],true) , true, false, true, false, '');
+			} else {
+				$additional_files .= " ".ToymFileUploads::getFilePath($file->id, true)." ";
+			}
+		}
+
+		if($this->nbi_clearance_upload_id != "") {
+			$file = ToymFileUploads::model()->findByPk($this->nbi_clearance_upload_id);
+
+			if(strtolower($file->file_extension) != "pdf") {
+				$pdf->addPage();
+				$pdf->writeHTML(Yii::app()->controller->renderPartial('_portfolio_page_documents2',['file_upload_id'=>$this->nbi_clearance_upload_id],true) , true, false, true, false, '');
+			} else {
+				$additional_files .= " ".ToymFileUploads::getFilePath($file->id, true)." ";
+			}
+		}
+ 
+		$header = array('Country', 'Capital', 'Area (sq km)', 'Pop. (thousands)'); //TODO:you can change this Header information according to your need.Also create a Dynamic Header.
+ 
+		// data loading
+		$data = $pdf->LoadData(Yii::getPathOfAlias('ext.tcpdf').DIRECTORY_SEPARATOR.'table_data_demo.txt'); //This is the example to load a data from text file. You can change here code to generate a Data Set from your model active Records. Any how we need a Data set Array here.
+		// print colored table
+		
+		// set style for barcode
+		$style = array(
+			'border' => false,
+			'vpadding' => 'auto',
+			'hpadding' => 'auto',
+			'fgcolor' => array(0,0,0),
+			'bgcolor' => false, //array(255,255,255)
+			'module_width' => 1, // width of a single module in points
+			'module_height' => 1 // height of a single module in points
+		);
+			
+		$pdf->lastPage();
+
+		$pdf_filename = $this->id.time().'_TOYM_PORTFOLIO.pdf';
+		$pdf_portfolio_path = '/Users/mac/Sites/toym/page_assets/pdfs/'.$pdf_filename;
+
+		if($additional_files != "") {
+			$pdf->Output($pdf_portfolio_path, 'F');
+			$current_pdf_portfolio_path = "page_assets/pdfs/{$pdf_filename}";
+			$pdfs_filepath = "{$current_pdf_portfolio_path} {$additional_files}";
+			$new_pdf_filename = $this->id.time().'b_TOYM_PORTFOLIO.pdf';
+			$pdf_output_filepath = "page_assets/pdfs/{$new_pdf_filename}";
+			$this->mergePdfs($pdfs_filepath, $pdf_output_filepath);
+			unlink($current_pdf_portfolio_path);
+
+			return $new_pdf_filename;
+		} else {
+			$pdf->Output($pdf_portfolio_path, 'F');
+			return $pdf_filename;
+		}
+	}
 
 	/**
 	 * Returns the static model of the specified AR class.

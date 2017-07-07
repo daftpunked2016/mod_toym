@@ -54,6 +54,7 @@ class ToymNominator extends CActiveRecord
 			array('new_password', 'length', 'min'=>8, 'max'=>16),
 			array('password', 'length', 'min'=>8, 'max'=>16, 'on' => 'createNominator'),
 			array('home_address, business_address', 'length', 'max'=>155),
+			array('additional_endorsing_chapter', 'length', 'max'=>255),
 			array('home_telephone, mobile_no', 'length', 'max'=>15),
 			array('date_updated', 'safe'),
 			// The following rule is used by search().
@@ -112,6 +113,7 @@ class ToymNominator extends CActiveRecord
 			'mobile_no' => 'Mobile No',
 			'business_address' => 'Business Address',
 			'endorsing_chapter' => 'Endorsing Chapter',
+			'additional_endorsing_chapter' => 'Additional Endorsing Chapter',
 			'date_created' => 'Date Created',
 			'date_updated' => 'Date Updated',
 			'status_id' => 'Status',
@@ -255,6 +257,18 @@ class ToymNominator extends CActiveRecord
 						))))->count();
 		return $count;
 	}
+
+	public function getChapterPresident()
+	{
+		$pres_account = Account::model()
+			->with([
+				'user'=>[
+					'condition'=>'chapter_id = '.$this->endorsing_chapter.' AND position_id = 11',
+				]])->find('status_id = 1');
+		
+		return ($pres_account) ? $pres_account->user->getFullName() : 'N/A';
+	}
+
 
 
 	public function validatePassword($password)

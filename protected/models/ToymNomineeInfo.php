@@ -40,6 +40,7 @@
  */
 class ToymNomineeInfo extends CActiveRecord
 {
+	
 	/**
 	 * @return string the associated database table name
 	 */
@@ -190,6 +191,32 @@ class ToymNomineeInfo extends CActiveRecord
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
+	}
+
+	public function getGender()
+	{
+		if($this->gender == "F") {
+			return "Female";
+		}
+
+		return "Male";
+	}
+
+	public function getCivilStatus()
+	{
+		switch($this->civil_status) {
+			case "S":
+				return "Single";
+			break;
+			case "M":
+				return "Married";
+			break;
+			case "W":
+				return "Windowed";
+			break;
+			default:
+				return "N/A";
+		}
 	}
 
 	public function addFileToAttr($file, $attribute_name, $nominator_id = null, $nominee_id = null,  $type = ImageFileHandler::NOMINATION_FILES)

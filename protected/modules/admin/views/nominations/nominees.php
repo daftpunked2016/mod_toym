@@ -105,7 +105,7 @@ switch($status) {
 				<?php  $this->widget('zii.widgets.CListView', array(
 					'dataProvider'=>$nomineesDP,
 					'itemView'=>'_view_nominees',
-					'viewData' => array("status" => $status),
+					'viewData' => array("status" => $status, 'chapters_indexed'=>$chapters_indexed),
 					'template' => "{sorter}<table id=\"example1\" class=\"table table-bordered table-hover\">
 					<thead class='panel-heading'>
 						<th>Title</th>
@@ -123,7 +123,7 @@ switch($status) {
 					</tbody>
 					</table>
 					{pager}",
-					'emptyText' => "<tr><td colspan=\"6\">No available entries</td></tr>",
+					'emptyText' => "<tr><td colspan=\"9\">No available entries</td></tr>",
 				));  ?>
 				</div>
 			</div>
@@ -149,8 +149,40 @@ switch($status) {
   </div>
 </div>
 
+<div class="modal fade" tabindex="-1" role="dialog" id="endorsingChaptersModal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel"><i class="fa fa-plus-circle"></i> Add Other Endorsing Chapters</h4>
+      </div>
+      <div class="modal-body">
+      	<form id="endorsing-chapter-form">
+	        <div class="row">
+	        	<div class="col-md-12">
+	        		<input type="hidden" id="ec-nominator-id" name="nominator_id" value="" />
+	        		<label>Endorsing Chapters</label>
+	        		<select class="form-control" id="endorsing-chapters" name="additional_endorsing_chapters[]" multiple="multiple" style="width:100%;">
+						<?php foreach($chapters as $chapter): ?>
+							<option value="<?= $chapter->id; ?>"><?= $chapter->chapter; ?></option>
+						<?php endforeach; ?>
+					</select>
+	        	</div>
+        	</div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" id="btn-hide-add-chapter">Close</button>
+        <button type="button" class="btn btn-primary" id="btn-update-chapters">Update</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
 $(function() {
+	$('[data-toggle="tooltip"]').tooltip();
+
 	$(document).on('click', '#area-no', function() {
 		if($(this).val() == "") {
 			$('#chapter-id').children('option.chapter-options').show();
@@ -158,7 +190,6 @@ $(function() {
 			$('#chapter-id').children('option.chapter-options').hide();
 			$('#chapter-id').children('option.chapter-options[data-area="'+$(this).val()+'"]').show();
 		}
-		
 	});
 
 	$(document).on('click', '.btn-view-details', function() {
@@ -178,6 +209,50 @@ $(function() {
 	            
 	         	$('#viewDetailsModal').find('.modal-body').html(details_html);
 	         	$('#viewDetailsModal').modal('show');
+	         },
+	         error: function() {
+	              alert("ERROR in running requested function. Page will now reload.");
+	              location.reload();
+	         }
+	    });
+	});
+
+	$(document).on('click', '.btn-add-chapter', function() {
+		var chapters = $(this).data('chapters');
+		var $endorsingChapters = $("#endorsing-chapters").select2();
+
+		if(chapters != "")
+			$endorsingChapters.val(chapters).trigger("change");
+
+		$('#ec-nominator-id').val($(this).data('nominator'));
+		$('#endorsingChaptersModal').modal('show');
+	});
+
+	$(document).on('click', '#btn-hide-add-chapter', function() {
+		var $endorsingChapters = $("#endorsing-chapters").select2();
+		$endorsingChapters.val(null).trigger("change");
+		$('#endorsingChaptersModal').modal('hide');
+	});
+
+	$(document).on('click', '#btn-update-chapters', function() {
+		$('.btn-actions').prop('disabled', true);
+		var $btn = $(this).button('loading');
+
+		$.ajax({
+	         url: site_url + '/admin/nominations/updateendorsingchapters',
+	         method: "POST",
+	         data: $('#endorsing-chapter-form').serialize(),
+	         success: function(response) {
+	            result = JSON.parse(response);
+	         },
+	         complete: function() {
+	         	if(result.type) {
+	                alert(result.message);
+	            } else {
+	                launchAlert(result.message, 'danger');
+	            }
+
+	            location.reload();
 	         },
 	         error: function() {
 	              alert("ERROR in running requested function. Page will now reload.");
