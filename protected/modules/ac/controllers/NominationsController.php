@@ -12,12 +12,12 @@ class NominationsController extends Controller
 	public function actionNominees($status = null)
 	{
 		$criteria = [];
-		$condition = '';
+		$condition = 'status != 6';
 		$nominator_condition = [ 'select' => false ];
 		$area_no = Yii::app()->getModule('ac')->user->getState('area_no');
 
 		if($status == 1 || $status == 2 || $status == 3 || $status == 4 || $status == 5) {
-			$condition = "status = {$status}";
+			$condition = "status = {$status} AND status != 6";
 		}
 
 		if(isset($_GET['credentials']) && $_GET['credentials'] != "") {
@@ -138,6 +138,32 @@ class NominationsController extends Controller
 			if($nominee->save() && $nominator->save() && $send_email) {	
 				$transaction->commit();
 				Yii::app()->user->setFlash('success','Nomination successfully Rejected');
+			} else {
+				$transaction->rollback();
+				Yii::app()->user->setFlash('error','An error occurred while running function. Please try again or report this issue to the administrator.');
+			}
+
+			$this->redirect(["nominees?status={$status}"]);
+		}
+	}
+
+	public function actionDelete($id, $status = null)
+	{
+		$nominee = ToymNominee::model()->findByPk($id);
+
+		if($nominee)
+		{
+			$nominator = ToymNominator::model()->findByPk($nominee->nominator_id);
+
+			$connection = Yii::app()->db;
+			$transaction = $connection->beginTransaction();
+
+			$nominee->status = $nominator->status_id = 6; //DELETED
+
+
+			if($nominee->save() && $nominator->save()) {	
+				$transaction->commit();
+				Yii::app()->user->setFlash('success','Nomination successfully Deleted');
 			} else {
 				$transaction->rollback();
 				Yii::app()->user->setFlash('error','An error occurred while running function. Please try again or report this issue to the administrator.');

@@ -67,6 +67,10 @@
 			} else if($data->status == 1 || $data->status == 4) {
 				echo CHtml::link('<span class="btn-actions btn-flat btn-warning btn-xs"><i class="fa fa-circle-o"></i></span> ', array('nominations/returntopending', 'id' => $data->id, 'status'=>$status), array('confirm' => "Are you sure you revert this nominee into pending status?", 'title' => 'Revert to Pending')).' ';
 			} 
+
+			if($data->status == 4 || $data->status == 5) {
+				echo CHtml::link('<span class="btn-flat btn-default btn-xs"><i class="fa fa-trash"></i></span> ', array('nominations/delete', 'id' => $data->id, 'status'=>$status), array('confirm' => "Are you sure you want to delete this nomination?", 'title' => 'Delete Nominee')).' ';
+			}	
 		?>
 	</td>
 </tr>

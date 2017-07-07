@@ -66,8 +66,12 @@
 				echo CHtml::link('<span class="btn-flat btn-success btn-xs"><i class="fa fa-check"></i></span> ', array('nominations/approve', 'id' => $data->id, 'status'=>$status), array('confirm' => "Are you sure you want to approve this nominee?", 'title' => 'Approve Nominee')).' ';
 				echo CHtml::link('<span class="btn-flat btn-danger btn-xs"><i class="fa fa-remove"></i></span> ', array('nominations/reject', 'id' => $data->id, 'status'=>$status), array('confirm' => "Are you sure you want to reject this nominee?", 'title' => 'Reject Nominee')).' ';
 			} else if($data->status == 5) {
-				echo CHtml::link('<span class="btn-flat btn-warning btn-xs"><i class="fa fa-circle-o"></i></span> ', array('nominations/returntopending', 'id' => $data->id, 'status'=>$status), array('confirm' => "Are you sure you revert this nominee into pending status?", 'title' => 'Revert to Pending')).' ';
+				echo CHtml::link('<span class="btn-flat btn-warning btn-xs"><i class="fa fa-circle-o"></i></span> ', array('nominations/returntopending', 'id' => $data->id, 'status'=>$status), array('confirm' => "Are you sure you want to revert this nominee into pending status?", 'title' => 'Revert to Pending')).' ';
 				//echo CHtml::link('<span class="btn-flat btn-success btn-xs"><i class="fa fa-check"></i></span> ', array('nominations/approve', 'id' => $data->id, 'status'=>$status), array('confirm' => "Are you sure you want to approve this nominee?", 'title' => 'Approve Nominee')).' ';
+			}
+
+			if($data->status == 4 || $data->status == 5) {
+				echo CHtml::link('<span class="btn-flat btn-default btn-xs"><i class="fa fa-trash"></i></span> ', array('nominations/delete', 'id' => $data->id, 'status'=>$status), array('confirm' => "Are you sure you want to delete this nomination?", 'title' => 'Delete Nominee')).' ';
 			}	
 		?>
 	</td>

@@ -36,7 +36,7 @@ switch($status) {
 		$status_str = "*ALL";
 }
 ?>
-<h1>Nominations <?= Yii::getVersion(); ?> <em class="text-muted">(<?= $status_str; ?>)</em></h1>
+<h1>Nominations <em class="text-muted">(<?= $status_str; ?>)</em></h1>
 </section>
 
 <section class="content">
@@ -58,7 +58,7 @@ switch($status) {
 							<option value="2"  <?= (isset($_GET['status']) && $_GET['status'] == 2) ? 'selected' : null; ?>>Pending to NC/Admin</option>
 							<option value="3"  <?= (isset($_GET['status']) && $_GET['status'] == 3) ? 'selected' : null; ?>>Pending</option>
 							<option value="4"  <?= (isset($_GET['status']) && $_GET['status'] == 4) ? 'selected' : null; ?>>Rejected by NC</option>
-							<option value="4"  <?= (isset($_GET['status']) && $_GET['status'] == 4) ? 'selected' : null; ?>>Rejected by AC</option>
+							<option value="4"  <?= (isset($_GET['status']) && $_GET['status'] == 5) ? 'selected' : null; ?>>Rejected by AC</option>
 						</select>
 					</div>
 				</div>
