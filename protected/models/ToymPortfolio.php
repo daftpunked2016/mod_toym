@@ -396,7 +396,7 @@ class ToymPortfolio extends CActiveRecord
 		$pdf->lastPage();
 
 		$pdf_filename = $this->id.time().'_TOYM_PORTFOLIO.pdf';
-		$pdf_portfolio_path = '/Users/mac/Sites/toym/page_assets/pdfs/'.$pdf_filename;
+		$pdf_portfolio_path = '/home/quadrant/public_html/2017TOYMmod/page_assets/pdfs/'.$pdf_filename;
 
 		if($additional_files != "") {
 			$pdf->Output($pdf_portfolio_path, 'F');
