@@ -197,9 +197,11 @@ class ToymNomineeInfo extends CActiveRecord
 	{
 		if($this->gender == "F") {
 			return "Female";
+		} elseif($this->gender == "M") {
+			return "Male";
 		}
 
-		return "Male";
+		return "N/A";
 	}
 
 	public function getCivilStatus()

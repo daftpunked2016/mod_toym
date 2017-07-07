@@ -293,6 +293,10 @@ class ToymPortfolio extends CActiveRecord
 		$chapters_indexed = CHtml::listData($chapters, 'id', 'chapter');
 		$additional_files = "";
 
+		if($nominee_info == null) {
+			$nominee_info = new ToymNomineeInfo();
+		}
+		
 		$pdf = new MYPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 		spl_autoload_register(array('YiiBase','autoload'));
 
