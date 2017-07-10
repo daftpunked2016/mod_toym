@@ -28,7 +28,7 @@ class PortfoliosController extends Controller
 		$criteria['order'] = 'nominator.date_created DESC'; 
 
 		$portfolios = ToymPortfolio::model()->with([
-			'nominee',
+			'nominee'=> ['select' => false, 'condition'=>'status = 1'],
 			'nominator'=>[
 				'select'=> false,
 				'condition'=> "chapter.area_no = ".Yii::app()->getModule('ac')->user->getState('area_no'),

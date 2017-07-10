@@ -10,6 +10,7 @@ class PortfoliosController extends Controller
 	{
 		$criteria = [];
 		$condition = '';
+		$nominee_condition = ['select' => false, 'condition'=>'status = 1'];
 		$nominator_condition = ['select' => false];
 
 		if($status == 1 || $status == 2) {
@@ -40,7 +41,7 @@ class PortfoliosController extends Controller
 		$criteria['order'] = 'nominator.date_created DESC';
 
 		$portfolios = ToymPortfolio::model()->with([
-			'nominee',
+			'nominee' => $nominee_condition,
 			'nominator'=>$nominator_condition
 		])->findAll($criteria);
 
