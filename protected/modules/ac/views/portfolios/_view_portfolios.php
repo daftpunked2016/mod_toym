@@ -29,6 +29,17 @@
 	</td>
 	<td>
 		<?= CHtml::link('<span class="btn-flat btn-info btn-xs"><i class="fa fa-search"></i></span> ', array('portfolios/view', 'id' => $data->id ), array('title' => 'View Portfolio PDF', 'target'=>'_blank')); ?> 
-		<?= CHtml::link('<span class="btn-flat btn-primary btn-xs"><i class="fa fa-download"></i></span> ', array('portfolios/download', 'id' => $data->id ), array('title' => 'Download Portfolio PDF', 'target'=>'_blank')); ?> 
+		<div class="btn-group" role="group"  data-toggle="tooltip" data-placement="top" title="Download Files">
+		    <button type="button" class="btn btn-flat btn-primary btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		      <i class="fa fa-download"></i>
+		      <span class="caret"></span>
+		    </button>
+		    <ul class="dropdown-menu dropdown-menu-right">
+		      <li><a href="<?= Yii::app()->createUrl('ac/portfolios/download', array('id' => $data->id)); ?>">Portfolio</a></li>
+		      <?php if($data->id_birth_cert_upload_id != ""): ?><li><a href="<?= Yii::app()->createUrl('ac/portfolios/downloaddocument', array('id' => $data->id_birth_cert_upload_id)); ?>">ID/Birth Certificate</a></li><?php endif; ?>
+		      <?php if($data->nbi_clearance_upload_id != ""): ?><li><a href="<?= Yii::app()->createUrl('ac/portfolios/downloaddocument', array('id' => $data->nbi_clearance_upload_id)); ?>">NBI Clearance</a></li><?php endif; ?>
+		    </ul>
+		</div>
+		<? //= CHtml::link('<span class="btn-flat btn-primary btn-xs"><i class="fa fa-download"></i></span> ', array('portfolios/download', 'id' => $data->id ), array('title' => 'Download Portfolio PDF', 'target'=>'_blank')); ?> 
 	</td>
 </tr>
