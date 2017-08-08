@@ -78,4 +78,18 @@ class PortfoliosController extends Controller
 		unlink($pdf_filepath);
 	}
 
+	public function actionDownloadDocument($id)
+	{ 
+		$file = ToymFileUploads::model()->findByPk($id);
+		$filepath = ToymFileUploads::getFilePath($id, true);
+
+		if(strtolower($file->file_extension) != "pdf") {
+			$this->downloadFile($id.'_'.time().'.'.$file->file_extension, $filepath);
+		} else {
+			$this->downloadPdf($id.'_'.time().'.pdf', $filepath);
+		}
+
+		unlink($pdf_filepath);
+	}
+
 }

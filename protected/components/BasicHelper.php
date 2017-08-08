@@ -75,4 +75,12 @@ trait BasicHelper
 		header('Content-disposition: attachment; filename="'.$pdf_filename.'"');
 		readfile($pdf_path);
     }
+
+    public function downloadFile($filename, $file_path)
+    {
+		header('Content-Type: application/octet-stream');
+		header("Content-Transfer-Encoding: Binary"); 
+		header("Content-disposition: attachment; filename=\"" . basename($filename) . "\""); 
+		readfile($file_path);
+    }
 }

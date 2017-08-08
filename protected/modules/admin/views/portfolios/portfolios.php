@@ -104,7 +104,6 @@
 		</div>
 	</div>
 </section>
-
 <script>
 $(function() {
 	$(document).on('click', '#area-no', function() {

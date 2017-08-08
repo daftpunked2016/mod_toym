@@ -402,20 +402,20 @@ class ToymPortfolio extends CActiveRecord
 		$pdf_filename = $this->id.time().'_TOYM_PORTFOLIO.pdf';
 		$pdf_portfolio_path = '/home/quadrant/public_html/2017TOYMmod/page_assets/pdfs/'.$pdf_filename;
 
-		if($additional_files != "") {
-			$pdf->Output($pdf_portfolio_path, 'F');
-			$current_pdf_portfolio_path = "page_assets/pdfs/{$pdf_filename}";
-			$pdfs_filepath = "{$current_pdf_portfolio_path} {$additional_files}";
-			$new_pdf_filename = $this->id.time().'b_TOYM_PORTFOLIO.pdf';
-			$pdf_output_filepath = "page_assets/pdfs/{$new_pdf_filename}";
-			$this->mergePdfs($pdfs_filepath, $pdf_output_filepath);
-			unlink($current_pdf_portfolio_path);
+		// if($additional_files != "") {
+		// 	$pdf->Output($pdf_portfolio_path, 'F');
+		// 	$current_pdf_portfolio_path = "page_assets/pdfs/{$pdf_filename}";
+		// 	$pdfs_filepath = "{$current_pdf_portfolio_path} {$additional_files}";
+		// 	$new_pdf_filename = $this->id.time().'b_TOYM_PORTFOLIO.pdf';
+		// 	$pdf_output_filepath = "page_assets/pdfs/{$new_pdf_filename}";
+		// 	$this->mergePdfs($pdfs_filepath, $pdf_output_filepath);
+		// 	unlink($current_pdf_portfolio_path);
 
-			return $new_pdf_filename;
-		} else {
+		// 	return $new_pdf_filename;
+		// } else {
 			$pdf->Output($pdf_portfolio_path, 'F');
 			return $pdf_filename;
-		}
+		//}
 	}
 
 	/**
