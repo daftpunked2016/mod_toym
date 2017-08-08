@@ -55,7 +55,7 @@ class ToymNominee extends CActiveRecord
 			array('new_password', 'length', 'min'=>8, 'max'=>16),
 			array('title', 'length', 'max'=>10),
 			array('name_on_trophy, phonetic_pronunciation', 'length', 'max'=>100),
-			array('profession, position', 'length', 'max'=>155),
+			array('profession, position, subcategory_others', 'length', 'max'=>155),
 			array('date_updated', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
@@ -103,6 +103,7 @@ class ToymNominee extends CActiveRecord
 			'position' => 'Position',
 			'toym_category_id' => 'Category',
 			'toym_subcategory_id' => 'Subcategory',
+			'subcategory_others' => 'Other Subcategory',
 			'date_created' => 'Date Created',
 			'date_updated' => 'Date Updated',
 			'status' => 'Status',

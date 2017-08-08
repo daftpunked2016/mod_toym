@@ -14,7 +14,7 @@
 	<td><?= CHtml::encode($data->title); ?></td>
 	<td><strong><?= CHtml::encode($data->getFullName()); ?></strong></td>
 	<td><em><?= CHtml::encode($data->email); ?></em></td>
-	<td><?= CHtml::encode($data->category->catname); ?> <small class="text-muted">(<?= CHtml::encode($data->subcategory->catdesc); ?>)</small></td>
+	<td><?= CHtml::encode($data->category->catname); ?> <small class="text-muted">(<?= ($data->subcategory->catdesc == "Others (Specify)") ? ($data->subcategory_others == "") ? "<em>N/A</em>" : $data->subcategory_others : CHtml::encode($data->subcategory->catdesc); ?>)</small></td>
 	<td>
 		<?= CHtml::encode($data->nominator->chapter->chapter); ?>
 		<?php if($data->nominator->additional_endorsing_chapter != NULL) {

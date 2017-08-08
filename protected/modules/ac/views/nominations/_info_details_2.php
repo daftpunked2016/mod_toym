@@ -88,6 +88,17 @@
         <?php echo $form->error($nominee,'toym_subcategory_id', array('class'=>'text-red')); ?>
       </div>
     </div>
+
+    <?php if($nominee->toym_subcategory_id != "" && $nominee->subcategory->catdesc == "Others (Specify)"): ?>
+    <div class="form-group" id="subcategory-others">
+      <div class="col-sm-2 text-right"><i>If Others, please specify</i></div>
+      <div class="col-sm-10">
+        <?php echo $form->textField($nominee,'subcategory_others',array('class'=>'form-control', 'placeholder'=>'', 'readonly'=>'readonly')); ?>
+        <?php echo $form->error($nominee,'subcategory_others', array('class'=>'text-red')); ?>
+      </div>
+    </div>
+    <?php endif; ?>
+
   </div>
   <!-- /.box-body -->
 </div>
