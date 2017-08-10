@@ -86,6 +86,21 @@
       loadSubcategory(toym_category, $('#toym-subcategory-id').val());
     };
 
+    if($('#toym-subcategory-id').find(":selected").text() == "Others (Specify)") {
+      $('#subcategory-others').show();
+    }
+
+    $(document).on('change', '#toym-subcategory-id', function() {
+      var selected = $(this).find("option[value='"+$(this).val()+"']").text();
+
+      if(selected == "Others (Specify)") {
+        $('#subcategory-others').fadeIn();
+      } else {
+        $('#subcategory-others').hide();
+      }
+    });
+
+
     $(document).on('click', '.browse', function(){
       var file = $(this).parent().parent().parent().find('.file');
       file.trigger('click');
