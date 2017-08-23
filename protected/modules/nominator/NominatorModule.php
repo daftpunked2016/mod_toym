@@ -40,6 +40,8 @@ class NominatorModule extends CWebModule
 			$publicPages = array(
 				'default/login',
 				'default/error',
+				'default/forgotpassword',
+				'default/rstpwd',
 			);
 			
 			// if(Yii::app()->getModule('nominator')->user->isGuest && !in_array($route,$publicPages))

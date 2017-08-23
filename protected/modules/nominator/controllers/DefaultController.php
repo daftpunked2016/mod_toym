@@ -89,4 +89,113 @@ class DefaultController extends Controller
 				$this->render('error', $error);
 		}
 	}
+
+	public function actionForgotPassword()
+	{
+		$this->layout = '/layouts/login';
+		
+		if(isset($_POST['reset']))
+		{
+			$email = $_POST['email'];
+
+			if($email !== '')
+			{
+				$nominator = ToymNominator::model()->find('email = "'.$email.'"');
+				
+				if($nominator != null && $nominator->is_jci_member != 1)
+				{
+					$vlCode = $nominator->id.$nominator->salt;
+					$hashedVlCode = sha1($vlCode);
+
+					//EMAIL NOTIFICATION
+					$email_notification = new EmailWrapper;
+					$email_notification->setSubject('TOYM - JCIPH | RESET PASSWORD REQUEST');
+					$email_notification->setReceivers(array(
+						$email => $nominator->getFullName(),
+					));
+					$email_notification->setMessage(Yii::app()->controller->renderPartial('application.views.email_templates.nominator_forgot_password', ['nominator'=>$nominator, 'hashedVlCode'=>$hashedVlCode], true));
+					$send_email = $email_notification->sendMessage();
+
+					if($send_email) {	
+						Yii::app()->user->setFlash('success','An email with the link for your Password Reset request, was sent to your Email Address.');
+					} else {
+						Yii::app()->user->setFlash('error','There\'s an error in sending the email. Please try again later.');
+					}
+				} else {
+					if($nominator == null) {
+						Yii::app()->user->setFlash('error','Nominator Account doesn\'t exist! The Username/Email Address you inputted was invalid. Please try again.');
+					} else {
+						if($nominator->is_jci_member == 1) {
+							Yii::app()->user->setFlash('error','Your TOYM Nominator account is connected to your MyJCIP Account. Please request a reset password in this link: <a href="http://localhost:8888/mod02/index.php/site/forgotpassword" target="_blank">MyJCIP Forgot Password</a>');
+						}
+					}
+				}	
+			}	
+			else
+				Yii::app()->user->setFlash('error','Please input your Username/Email Address first!');
+
+		}
+
+		$this->render('forgotpass');
+	}
+
+	public function actionRstPwd($vc, $ai)
+	{
+		$this->layout = '/layouts/login';
+		$nominator = ToymNominator::model()->findByPk($ai);
+
+		if($nominator != null)
+		{
+			$vlCode = $nominator->id.$nominator->salt;
+			$hashedVlCode = sha1($vlCode);
+
+			if($hashedVlCode === $vc)
+			{
+				if(isset($_POST['newpassword']))
+				{
+					if($_POST['newpassword'] === $_POST['confirmpassword'])
+					{
+						$nominator->setScenario('resetPwd');
+						$nominator->new_password = $_POST['newpassword'];
+						$nominator->confirm_password = $_POST['confirmpassword'];
+						$valid = $nominator->validate();
+
+						if($valid)
+						{
+							$nominator->password = $nominator->hashPassword($nominator->new_password, $nominator->salt);
+
+							if($nominator->save(false))
+							{
+								Yii::app()->user->setFlash('success','You have successfully changed your password!');
+								$this->redirect(array('login'));
+							}
+							else
+							{
+								 Yii::app()->user->setFlash('error','An error has occurred while trying to change your password. Please try again later.');
+							}
+						}
+						else
+							{print_r($nominator->getErrors());exit;}
+					}
+					else
+						Yii::app()->user->setFlash('error','Passwords doesn\'t match!');
+
+
+					$this->redirect(array('rstpwd', 'vc'=>$vc, 'ai'=>$ai));
+				}
+
+				$this->render('reset_password',array('nominator'=>$nominator));
+			}
+			else
+			{
+				Yii::app()->user->setFlash('error','INVALID LINK!');
+				$this->redirect(array('login'));
+			}
+		}
+		else
+		{
+			Yii::app()->user->setFlash('error','INVALID LINK!');
+			$this->redirect(array('login'));
+		}
+	}
 }

@@ -40,6 +40,8 @@ class NomineeModule extends CWebModule
 			$publicPages = array(
 				'default/login',
 				'default/error',
+				'default/forgotpassword',
+				'default/rstpwd',
 			);
 			
 			// if(Yii::app()->getModule('nominee')->user->isGuest && !in_array($route,$publicPages))
