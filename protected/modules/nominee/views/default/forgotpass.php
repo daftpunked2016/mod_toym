@@ -3,6 +3,9 @@
     <img src = "<?php echo Yii::app()->request->baseUrl; ?>/page_assets/images/navbar_jci.png" height="125px" ></img>
   </div><!-- /.login-logo -->
   <div class="login-box-body">
+    <div class="login-logo">
+      <a href="<?php echo Yii::app()->request->baseUrl; ?>/page_assets/index2.html"><b>TOYM</b> | Nominee</a>
+    </div>
 
       <?php foreach(Yii::app()->user->getFlashes() as $key=>$message) {
           if($key  === 'success')

@@ -53,7 +53,7 @@
     
     <br />
     <div class="row text-center">
-      <a href="#">Forgot Password?</a><br>
+      <a href="<?php echo Yii::app()->request->baseUrl; ?>/nominator/default/forgotpassword">Forgot Password?</a><br>
     </div>
 
   </div>
