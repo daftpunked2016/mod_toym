@@ -126,7 +126,7 @@ class DefaultController extends Controller
 						Yii::app()->user->setFlash('error','Nominator Account doesn\'t exist! The Username/Email Address you inputted was invalid. Please try again.');
 					} else {
 						if($nominator->is_jci_member == 1) {
-							Yii::app()->user->setFlash('error','Your TOYM Nominator account is connected to your MyJCIP Account. Please request a reset password in this link: <a href="http://localhost:8888/mod02/index.php/site/forgotpassword" target="_blank">MyJCIP Forgot Password</a>');
+							Yii::app()->user->setFlash('error','Your TOYM Nominator account is connected to your MyJCIP Account. Please request a reset password in this link: <a href="http://jci.org.ph/mod02/index.php/site/forgotpassword" target="_blank">MyJCIP Forgot Password</a>');
 						}
 					}
 				}	
