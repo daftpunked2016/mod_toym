@@ -40,6 +40,17 @@
 		      <?php if($data->nbi_clearance_upload_id != ""): ?><li><a href="<?= Yii::app()->createUrl('ac/portfolios/downloaddocument', array('id' => $data->nbi_clearance_upload_id)); ?>">NBI Clearance</a></li><?php endif; ?>
 		    </ul>
 		</div>
+
+		<div class="btn-group" role="group"  data-toggle="tooltip" data-placement="top" title="Download Supporting Photos">
+		    <button type="button" class="btn btn-flat btn-danger btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		      <i class="fa fa-image"></i>
+		      <span class="caret"></span>
+		    </button>
+		    <ul class="dropdown-menu dropdown-menu-right">
+		    	<?= $data->getDownloadImageOptions(); ?>
+		    </ul>
+		</div>
+
 		<? //= CHtml::link('<span class="btn-flat btn-primary btn-xs"><i class="fa fa-download"></i></span> ', array('portfolios/download', 'id' => $data->id ), array('title' => 'Download Portfolio PDF', 'target'=>'_blank')); ?> 
 	</td>
 </tr>

@@ -400,7 +400,8 @@ class ToymPortfolio extends CActiveRecord
 		$pdf->lastPage();
 
 		$pdf_filename = $this->id.time().'_TOYM_PORTFOLIO.pdf';
-		$pdf_portfolio_path = '/home/quadrant/public_html/2017TOYMmod/page_assets/pdfs/'.$pdf_filename;
+		//$pdf_portfolio_path = '/home/quadrant/public_html/2017TOYMmod/page_assets/pdfs/'.$pdf_filename;
+		$pdf_portfolio_path = 'page_assets/pdfs/'.$pdf_filename;
 
 		// if($additional_files != "") {
 		// 	$pdf->Output($pdf_portfolio_path, 'F');
@@ -427,5 +428,36 @@ class ToymPortfolio extends CActiveRecord
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
+	}
+
+	public function getDownloadImageOptions()
+	{	
+		$options = '';
+		$options .= self::strDownloadImageLink($this->supporting_photo_1, 1);
+		$options .= self::strDownloadImageLink($this->supporting_photo_2, 2);
+		$options .= self::strDownloadImageLink($this->supporting_photo_3, 3);
+		$options .= self::strDownloadImageLink($this->supporting_photo_4, 4);
+
+		if($options == '') {
+			return '<li><a href="#">No uploaded photos..</a></li>';
+		} else {
+			return $options;
+		}
+	}
+
+	public static function strDownloadImageLink($attribute, $section_no)
+	{	
+		$images = json_decode($attribute);
+		$options = '';
+		$x = 1;
+
+		if($images) {
+			foreach($images as $image) {
+				$options .= '<li><a href="'.ToymFileUploads::getFilePath($image).'" target="_blank">Supporting Photo <strong>'.$section_no.'.'.$x.'</strong></a></li>';
+				$x++;
+			}
+		}
+
+		return $options;
 	}
 }
