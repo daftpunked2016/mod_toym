@@ -460,4 +460,30 @@ class ToymPortfolio extends CActiveRecord
 
 		return $options;
 	}
+
+	public static function getImageFilesArray($id)
+	{	
+		$portfolio = ToymPortfolio::model()->findByPk($id);
+		$images = [];
+		$images1 = self::getImageFiles($portfolio->supporting_photo_1);
+		$images2 = self::getImageFiles($portfolio->supporting_photo_2);
+		$images3 = self::getImageFiles($portfolio->supporting_photo_3);
+		$images4 = self::getImageFiles($portfolio->supporting_photo_4);
+
+		return array_merge($images, $images1, $images2, $images3, $images4);
+	}
+
+	public static function getImageFiles($attribute)
+	{	
+		$images = json_decode($attribute);
+		$files = [];
+
+		if($images) {
+			foreach($images as $image) {
+				$files[] = ToymFileUploads::getFilePath($image, true);
+			}
+		}
+
+		return $files;
+	}
 }

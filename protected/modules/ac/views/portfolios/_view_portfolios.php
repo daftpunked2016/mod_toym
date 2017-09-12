@@ -41,15 +41,17 @@
 		    </ul>
 		</div>
 
-		<div class="btn-group" role="group"  data-toggle="tooltip" data-placement="top" title="Download Supporting Photos">
+		<?= CHtml::link('<span class="btn-flat btn-danger btn-xs"><i class="fa fa-image"></i></span> ', array('portfolios/downloadphotos', 'id' => $data->id ), array('title' => 'Download Supporting Photos ZIP', 'target'=>'_blank')); ?> 
+
+		<!-- <div class="btn-group" role="group"  data-toggle="tooltip" data-placement="top" title="Download Supporting Photos">
 		    <button type="button" class="btn btn-flat btn-danger btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 		      <i class="fa fa-image"></i>
 		      <span class="caret"></span>
 		    </button>
 		    <ul class="dropdown-menu dropdown-menu-right">
-		    	<?= $data->getDownloadImageOptions(); ?>
+		    	<? // =  // $data->getDownloadImageOptions(); ?>
 		    </ul>
-		</div>
+		</div> -->
 
 		<? //= CHtml::link('<span class="btn-flat btn-primary btn-xs"><i class="fa fa-download"></i></span> ', array('portfolios/download', 'id' => $data->id ), array('title' => 'Download Portfolio PDF', 'target'=>'_blank')); ?> 
 	</td>

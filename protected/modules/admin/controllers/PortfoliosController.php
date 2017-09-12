@@ -92,4 +92,43 @@ class PortfoliosController extends Controller
 		unlink($pdf_filepath);
 	}
 
+	public function actionDownloadPhotos($id)
+	{
+		$files = ToymPortfolio::getImageFilesArray($id);
+
+		if(empty($files)) {
+			echo "<pre>";
+			echo "Error! No Supporting Photos uploaded yet for this portfolio";
+			echo "</pre>";
+			exit;
+		}
+	    # create new zip opbject
+	    $zip = new ZipArchive();
+
+	    # create a temp file & open it
+	    $tmp_file = tempnam('.','');
+	    $zip->open($tmp_file, ZipArchive::CREATE);
+
+	    # loop through each file
+	    foreach($files as $file){
+
+	        # download file
+	        $download_file = file_get_contents($file);
+
+	        #add it to the zip
+	        $zip->addFromString(basename($file),$download_file);
+
+	    }
+
+	    # close zip
+	    $zip->close();
+
+	    # send the file to the browser as a download
+	    header('Content-disposition: attachment; filename=Portfolio_SupportPhotos_'.$id.'.zip');
+	    header('Content-type: application/zip');
+	    readfile($tmp_file);
+	    unlink($tmp_file);
+	    unlink($download_file);
+	}
+
 }
